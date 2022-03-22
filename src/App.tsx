@@ -21,6 +21,7 @@ LogBox.ignoreLogs([
   'ViewPager: Calling `getNode()` on the ref of an Animated component is no longer necessary.',
   'startLoadWithResult invoked with invalid lockIdentifier',
   'Did not receive response to shouldStartLoad in time',
+  'i18next: init: i18next is already initialized',
 ]);
 
 export type Props = {};

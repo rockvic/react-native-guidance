@@ -9,8 +9,9 @@ export default {
   home: {
     tab_home: '首页',
     tab_demo: '例子',
+    tab_me: '我',
     exit: '是否退出?',
-    currDate: '今天是{{date}}',
+    currDate: '现在是 {{date}}',
   },
   demo: {
     dialog: '提示框',

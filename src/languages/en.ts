@@ -9,8 +9,9 @@ export default {
   home: {
     tab_home: 'Home',
     tab_demo: 'Examples',
+    tab_me: 'Me',
     exit: 'Are you sure to quit ?',
-    currDate: 'today is {{date}}',
+    currDate: 'It is {{date}} now.',
   },
   demo: {
     dialog: 'Dialog',

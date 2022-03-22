@@ -47,8 +47,8 @@ function HomeTabNavigator() {
       <Tab.Screen
         name="MeTab"
         options={{
-          title: '我',
-          tabBarLabel: '我',
+          title: t('home.tab_me'),
+          tabBarLabel: t('home.tab_me'),
           tabBarIcon: ({ color }) => (
             <Icon name="person" color={color} size={22} />
           ),
