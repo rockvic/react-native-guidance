@@ -7,15 +7,15 @@
 
 export default {
   home: {
-    tab_home: 'Home',
-    tab_demo: 'Examples',
-    tab_me: 'Me',
-    exit: 'Are you sure to quit ?',
-    currDate: 'It is {{date}} now.',
+    tabName: {
+      tutorial: 'Tutorial',
+      me: 'Me',
+    },
   },
-  demo: {
-    dialog: 'Dialog',
-    button: 'Button',
-    switch: 'Switch',
+  turorial: {
+    title: 'Tutorial',
+  },
+  me: {
+    title: 'Me',
   },
 };

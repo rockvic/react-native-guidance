@@ -38,8 +38,8 @@ function HomeTabNavigator() {
       <Tab.Screen
         name="HomeTab"
         options={{
-          title: t('home.tab_home'),
-          tabBarLabel: t('home.tab_home'),
+          title: t('turorial.title'),
+          tabBarLabel: t('home.tabName.tutorial'),
           tabBarIcon: ({ color }) => <Icon name="book" color={color} size={22} />,
         }}
         component={Tutorial}
@@ -47,8 +47,8 @@ function HomeTabNavigator() {
       <Tab.Screen
         name="MeTab"
         options={{
-          title: t('home.tab_me'),
-          tabBarLabel: t('home.tab_me'),
+          title: t('me.title'),
+          tabBarLabel: t('home.tabName.me'),
           tabBarIcon: ({ color }) => (
             <Icon name="person" color={color} size={22} />
           ),

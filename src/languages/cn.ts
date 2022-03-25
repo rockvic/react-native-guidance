@@ -7,15 +7,15 @@
 
 export default {
   home: {
-    tab_home: '首页',
-    tab_demo: '例子',
-    tab_me: '我',
-    exit: '是否退出?',
-    currDate: '现在是 {{date}}',
+    tabName: {
+      tutorial: '教程',
+      me: '我的',
+    },
   },
-  demo: {
-    dialog: '提示框',
-    button: '按钮',
-    switch: '开关',
+  turorial: {
+    title: '教程',
+  },
+  me: {
+    title: '我的',
   },
 };

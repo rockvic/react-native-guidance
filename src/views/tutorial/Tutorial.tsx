@@ -22,7 +22,8 @@ const Tutorial: FC<Props> = () => {
 
 const styles = StyleSheet.create({
   root: {
-    borderColor: '#0000ff',
+    flex: 1,
+    backgroundColor: 'white',
   },
 });
 

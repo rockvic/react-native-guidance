@@ -11,15 +11,15 @@ export type Props = {};
 
 const Comp: React.FC<Props> = () => {
   return (
-    <View style={styles.view}>
+    <View style={styles.root}>
       <Text>这是一个ts组件</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  view: {
-    borderColor: '#0000ff',
+  root: {
+    backgroundColor: '#ffffff',
   },
 });
 

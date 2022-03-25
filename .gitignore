@@ -68,3 +68,5 @@ buck-out/
 *.copy
 *bak.*
 *.bak
+run.sh
+__localRes__
