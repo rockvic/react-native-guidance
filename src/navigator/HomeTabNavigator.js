@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from '@react-native-community/blur';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import Icon from '../components/EasyIcon';
 
 import Tutorial from '../views/tutorial/Tutorial';
+import Search from '../views/tutorial/Search';
 import Me from '../views/me/Me';
 
 const Tab = createBottomTabNavigator();
@@ -22,41 +23,69 @@ function HomeTabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={{
+        tabBarShowLabel: false,
         tabBarStyle: { position: 'absolute' },
+        tabBarActiveTintColor: 'rgb(28, 30, 33)',
         tabBarBackground: () => (
           <BlurView
             style={StyleSheet.absoluteFill}
-            blurType="light"
+            blurType='light'
             blurAmount={20}
             blurRadius={25}
-            overlayColor="transparent"
+            overlayColor='transparent'
           />
         ),
       }}
-    // tabBar={props => <TabBar {...props} />}
     >
       <Tab.Screen
-        name="HomeTab"
+        name='HomeTab'
         options={{
           title: t('turorial.title'),
           tabBarLabel: t('home.tabName.tutorial'),
-          tabBarIcon: ({ color }) => <Icon name="book" color={color} size={22} />,
+          tabBarIcon: ({ color }) => (
+            <Image
+              source={require('../assets/images/react.png')}
+              resizeMode='contain'
+              style={[styles.icon, {tintColor: color}]}
+            />
+          ),
         }}
         component={Tutorial}
       />
       <Tab.Screen
-        name="MeTab"
+        name='SearchTab'
+        options={{
+          title: t('search.title'),
+          tabBarLabel: t('home.tabName.search'),
+          tabBarIcon: ({ color }) => (
+            <Icon iconLib='fa5' name='search' color={color} size={20} />
+          ),
+        }}
+        component={Search}
+      />
+      <Tab.Screen
+        name='MeTab'
         options={{
           title: t('me.title'),
           tabBarLabel: t('home.tabName.me'),
-          tabBarIcon: ({ color }) => (
-            <Icon name="person" color={color} size={22} />
+          tabBarIcon: ({ focused, color }) => (
+            focused ?
+              <Icon iconLib='fa5' name='grin-alt' color={color} size={22} solid /> :
+              <Icon iconLib='fa5' name='grin' color={color} size={22} />
           ),
+          headerShown: false,
         }}
         component={Me}
       />
     </Tab.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  icon: {
+    width: 22,
+    height: 22,
+  },
+});
 
 export default HomeTabNavigator;

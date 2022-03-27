@@ -9,11 +9,15 @@ export default {
   home: {
     tabName: {
       tutorial: '教程',
+      search: '搜索',
       me: '我的',
     },
   },
   turorial: {
-    title: '教程',
+    title: 'React Native Guidance',
+  },
+  search: {
+    title: '搜教程',
   },
   me: {
     title: '我的',

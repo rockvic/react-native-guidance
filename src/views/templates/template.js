@@ -4,8 +4,8 @@
  * Author : Victor Huang
  */
 
-import React, {PureComponent} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import React, { PureComponent } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
 
 class Comp extends PureComponent {
   render() {

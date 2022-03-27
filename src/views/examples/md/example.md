@@ -35,7 +35,7 @@
 
   ~~Strikethrough~~
 
-  `text`
+  ` Code in line `
 
   ==Hightlight text==
 

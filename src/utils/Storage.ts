@@ -1,10 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Storage = () => {};
+const Storage = () => { };
 
 Storage.KEY = {
   // 系统语言环境
-  LOCALE: 'LOCALE',
+  LANGUAGE: 'LANGUAGE',
   // 当前登录信息
   AUTH: 'AUTH',
 };
@@ -84,17 +84,54 @@ export async function setItem(key: string, value: any) {
 }
 
 /**
+ * 获取所有存储的 key
+ * @returns keys
+ */
+ export async function getAllKeys() {
+  let keys: string[] = [];
+  try {
+    keys = keys.concat(await AsyncStorage.getAllKeys());
+  } catch (e) {
+    console.log(`[Storage.getAllKeys()] 发生错误：`, e);
+  }
+  return keys;
+}
+
+/**
+ * 获取多个存储对象的值
+ * @param keys 多个存储对象的 key
+ * @returns 对应对象的值
+ */
+export async function getMultiple(keys: string[]) {
+  let values;
+  try {
+    values = await AsyncStorage.multiGet(keys);
+  } catch(e) {
+    console.log(`[Storage.getMultiple()] 发生错误：`, e);
+  }
+  return values;
+}
+
+/**
+ * 向控制台打印所有存储的数据
+ */
+export async function logAllStorage() {
+  const values = await getMultiple(await getAllKeys());
+  console.log('All values in AsyncStorage:', values);
+}
+
+/**
  * 本地存取当前语言环境信息
  * @returns
  */
-export async function getLocaleLS() {
-  return getItem(Storage.KEY.LOCALE);
+export async function getLanguageLS() {
+  return getItem(Storage.KEY.LANGUAGE);
 }
-export async function setLocaleLS(locale: string) {
-  setItem(Storage.KEY.LOCALE, locale);
+export async function setLanguageLS(language: string) {
+  setItem(Storage.KEY.LANGUAGE, language);
 }
-export async function removeLocaleLS() {
-  removeItem(Storage.KEY.LOCALE);
+export async function removeLanguageLS() {
+  removeItem(Storage.KEY.LANGUAGE);
 }
 
 /**

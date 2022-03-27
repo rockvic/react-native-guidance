@@ -2,9 +2,9 @@
 /**
  * 带背景的ICON
  */
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import {View} from 'react-native';
+import { View } from 'react-native';
 
 import PropTypes from 'prop-types';
 
@@ -13,8 +13,8 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// FontAwesome 5 比较特殊，请直接使用，不要使用EasyIcon
-// import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import FontAwesome5Pro from "react-native-vector-icons/FontAwesome5Pro";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import Foundation from 'react-native-vector-icons/Foundation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -41,7 +41,8 @@ class EasyIcon extends Component {
     Zocial: Zocial,
     SimpleLineIcons: SimpleLineIcons,
     AntDesign: AntDesign,
-    // FontAwesome5: FontAwesome5,
+    FontAwesome5: FontAwesome5,
+    FontAwesome5Pro: FontAwesome5Pro,
     Fontisto: Fontisto,
   };
 
@@ -58,7 +59,8 @@ class EasyIcon extends Component {
     zi: Zocial,
     sl: SimpleLineIcons,
     ad: AntDesign,
-    // fa5: FontAwesome5,
+    fa5: FontAwesome5,
+    fa5pro: FontAwesome5Pro,
     fts: Fontisto,
   };
 
@@ -67,47 +69,40 @@ class EasyIcon extends Component {
   }
 
   render() {
-    let width = this.props.width ? {width: this.props.width} : this.props.size;
-    let height = this.props.height
-      ? {height: this.props.height}
-      : this.props.size;
-    let bg = this.props.bgColor
-      ? {backgroundColor: this.props.bgColor}
-      : {backgroundColor: 'transparent'};
-    let borderWidth = this.props.borderWidth
-      ? {borderWidth: this.props.borderWidth}
-      : null;
-    let borderColor = this.props.borderColor
-      ? {borderColor: this.props.borderColor}
-      : null;
-    let radius = this.props.radius ? {borderRadius: this.props.radius} : null;
+    let { iconLib, name, color, size, bgColor, borderColor, borderWidth, width, height, radius, style, ...other } = this.props;
+    width = width || size;
+    height = height || size;
+    let bg = bgColor ? { backgroundColor: bgColor } : { backgroundColor: 'transparent' };
+    borderWidth = borderWidth ? { borderWidth } : null;
+    borderColor = borderColor ? { borderColor } : null;
+    radius = radius ? { borderRadius: radius } : null;
 
-    let {style, ...other} = this.props;
     style = Array.isArray(style) ? style : [style];
 
     let _styles = [width, height, bg, borderWidth, borderColor, radius]
-      .concat([{alignItems: 'center', justifyContent: 'center'}])
+      .concat([{ alignItems: 'center', justifyContent: 'center' }])
       .concat(style);
 
-    let Icon = this.iconLib[this.props.iconLib]
-      ? this.iconLib[this.props.iconLib]
-      : this.iconLibAlias[this.props.iconLib]
-      ? this.iconLibAlias[this.props.iconLib]
-      : null;
+    let Icon = this.iconLib[iconLib]
+      ? this.iconLib[iconLib]
+      : this.iconLibAlias[iconLib]
+        ? this.iconLibAlias[iconLib]
+        : null;
 
     if (Icon) {
       return (
-        <View style={_styles} {...other}>
+        <View style={_styles}>
           <Icon
             name={this.props.name}
             color={this.props.color}
             size={this.props.size}
-            style={{textAlign: 'center'}}
+            style={{ textAlign: 'center' }}
+            {...other}
           />
         </View>
       );
     } else {
-      return <View style={_styles} {...other} />;
+      return <View style={_styles} />;
     }
   }
 }

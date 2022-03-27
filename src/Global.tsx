@@ -8,16 +8,6 @@ class Global extends Object {
 
   static token: string = '';
 
-  /*
-   * 设备实际屏幕属性
-   * screen.width 屏幕宽度
-   * screen.height 屏幕高度
-   */
-  static screen = {
-    width: width,
-    height: height,
-  };
-
   // 常用颜色
   static colors = {
     /** 规范配色 */
@@ -28,7 +18,7 @@ class Global extends Object {
     PRIMARY_FONT: '#242424', // 正文文案
     ASSIST_FONT: '#989898', // 辅助文案
     SEP_LINE: '#D6D6D6', // 分割线/描边/置灰
-    BG: '#F4F4F4', // 背景色
+    BG: 'rgba(242, 242, 242, 1)', // 背景色
 
     FONT: 'rgba(0,0,0,1)', // '#000000', 工作区主字体颜色：（黑）
     FONT_GRAY: 'rgba(93,93,93,1)', // '#5D5D5D', 工作区主字体颜色：（深）

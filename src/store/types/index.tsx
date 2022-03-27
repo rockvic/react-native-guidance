@@ -4,5 +4,5 @@ export const AUTH = {
 };
 
 export const BASE = {
-  SET_LOCALE: 'SET_LOCALE',
+  SET_LANGUAGE: 'SET_LANGUAGE',
 };

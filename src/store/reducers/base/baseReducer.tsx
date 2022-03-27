@@ -1,11 +1,11 @@
 import {BASE} from '../../types';
 
 export type BaseStateType = {
-  locale: string;
+  language?: string;
 };
 
 const initialState = {
-  locale: 'cn',
+  language: undefined,
 };
 
 type Action = {
@@ -15,10 +15,10 @@ type Action = {
 
 export default (state: BaseStateType = initialState, action: Action) => {
   switch (action.type) {
-    case BASE.SET_LOCALE:
+    case BASE.SET_LANGUAGE:
       return {
         ...state,
-        locale: action.payload,
+        language: action.payload,
       };
     default:
       return state;
