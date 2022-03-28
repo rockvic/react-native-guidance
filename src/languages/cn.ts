@@ -6,6 +6,9 @@
  */
 
 export default {
+  navigation: {
+    backText: '返回',
+  },
   home: {
     tabName: {
       tutorial: '教程',
@@ -21,5 +24,8 @@ export default {
   },
   me: {
     title: '我的',
+  },
+  changeBg: {
+    title: '选择背景',
   },
 };

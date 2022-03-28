@@ -1,21 +1,33 @@
 import * as React from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import { useTranslation } from 'react-i18next';
 
+import Global from '../Global';
+
+// screens
 import HomeTabNavigator from './HomeTabNavigator';
-import Loading from '../views/Loading';
+import { RootStackParamList } from './RootStackParamList';
+import ChangeBg from '../views/me/ChangeBg';
 import Test from '../views/examples/Test';
 import Test1 from '../views/examples/Test1';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  const { t } = useTranslation();
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Loading">
-        <Stack.Screen name="Loading" component={Loading} options={{ headerShown: false }} />
+      <Stack.Navigator 
+        initialRouteName="Home"
+        screenOptions={{
+          headerBackTitle: t('navigation.backText'),
+          headerTintColor: Global.colors.FONT_GRAY,
+        }}
+      >
         <Stack.Screen name="Home" component={HomeTabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name="ChangeBg" component={ChangeBg} options={{ title: t('changeBg.title') }} />
         <Stack.Screen name="Test" component={Test} options={{ title: '测试' }} />
         <Stack.Screen name="Test1" component={Test1} options={{ title: '测试1' }} />
       </Stack.Navigator>

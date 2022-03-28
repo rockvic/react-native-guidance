@@ -9,33 +9,68 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   Animated,
   useWindowDimensions,
+  TouchableOpacity,
+  StatusBar,
 } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import MarkDown from 'react-native-markdown-display';
-import loadLocalResource from 'react-native-local-resource';
-import moment from 'moment';
+import { useSelector } from 'react-redux';
+
+import type { CompositeNavigationProp } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 import Global from '../../Global';
 import log from '../../utils/Logger';
 import Icon from '../../components/EasyIcon';
-import { StateType } from '../../store/reducers';
-import { setLanguage } from '../../store/actions/base/baseAction';
+import bgs from '../../assets/images/bg';
 
-export type Props = {};
+import type { RootStackParamList } from '../../navigator/RootStackParamList';
+import type { HomeTabParamList } from '../../navigator/HomeTabParamList';
+import type { StateType } from '../../store/reducers';
+
+type MeNavigationProp = CompositeNavigationProp<
+  StackNavigationProp<RootStackParamList, 'Home'>,
+  BottomTabNavigationProp<HomeTabParamList, 'MeTab'>
+>;
+
+type Props = {
+  navigation: MeNavigationProp;
+};
 
 const avatarSize = 90;
 const avatarOffset = avatarSize * 0.618; // 50;
 
-const Tutorial: FC<Props> = () => {
+const Tutorial: FC<Props> = ({ navigation }) => {
+  const { bgType, bgIdx } = useSelector((state: StateType) => state.base.config);
   const bottomTabBarHeight = useBottomTabBarHeight();
   const bgWidth = useWindowDimensions().width;
   const bgHeight = bgWidth * 10 / 16;
-  const [scrollY, setScrollY] = useState(new Animated.Value(0));
+  const [scrollY] = useState(new Animated.Value(0));
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      StatusBar.setBarStyle('light-content');
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('blur', () => {
+      StatusBar.setBarStyle('dark-content');
+    });
+    return unsubscribe;
+  }, [navigation]);
+
+  /**
+   * 变更背景图
+   */
+  function changeBg() {
+    requestAnimationFrame(() => {
+      navigation.navigate('ChangeBg');
+    });
+  }
 
   /**
    * 渲染背景图片，在 iOS 下，背景图片随着下拉到负值时，等比例放大
@@ -58,7 +93,7 @@ const Tutorial: FC<Props> = () => {
           })
         }]
       }]}
-      source={require('../../assets/images/bg/001.png')}
+      source={bgs[bgIdx]}
     />;
   }
 
@@ -70,7 +105,10 @@ const Tutorial: FC<Props> = () => {
     return <View style={[styles.avatarFrame, { top: -avatarOffset }]}>
       <View style={styles.avatarMask}>
         <View style={styles.avatarContainer}>
-          <Icon iconLib='fa5' name='robot' size={avatarSize / 2.5} color={Global.colors.FONT_LIGHT_GRAY} style={{ paddingBottom: 8 }} solid />
+          <Icon iconLib='fa5' name='robot' size={avatarSize / 2.5}
+            color={Global.colors.FONT_LIGHT_GRAY}
+            style={{ paddingBottom: 8 }} solid
+          />
         </View>
       </View>
     </View>;
@@ -78,14 +116,16 @@ const Tutorial: FC<Props> = () => {
 
   return (
     <View style={[styles.root, { /* marginBottom: bottomTabBarHeight */ }]}>
+      {/* <StatusBar barStyle='light-content' /> */}
       {renderBg()}
-      <Animated.ScrollView style={[styles.rootSv, { paddingTop: bgHeight - 10 }]}
+      <Animated.ScrollView style={[styles.rootSv]}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
           { useNativeDriver: true }
         )}
         scrollEventThrottle={16}
       >
+        <TouchableOpacity style={[styles.bgPressMask, { height: bgHeight - 10 }]} onPress={changeBg} />
         <View style={[styles.container, { paddingTop: avatarSize - avatarOffset }]}>
           {renderAvatar()}
           {/* TODO: 如果用户设置了用户名并登录后，显示用户名 */}
@@ -107,6 +147,9 @@ const styles = StyleSheet.create({
   bg: {
     position: 'absolute',
     resizeMode: 'cover',
+  },
+  bgPressMask: {
+    backgroundColor: 'transparent',
   },
   rootSv: {
   },

@@ -1,10 +1,12 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import type { BaseStateType } from '../store/reducers/base/baseReducer';
+
 const Storage = () => { };
 
 Storage.KEY = {
-  // 系统语言环境
-  LANGUAGE: 'LANGUAGE',
+  // APP配置项
+  CONFIG: 'CONFIG',
   // 当前登录信息
   AUTH: 'AUTH',
 };
@@ -124,14 +126,14 @@ export async function logAllStorage() {
  * 本地存取当前语言环境信息
  * @returns
  */
-export async function getLanguageLS() {
-  return getItem(Storage.KEY.LANGUAGE);
+export async function getConfigLS() {
+  return getJsonItem(Storage.KEY.CONFIG);
 }
-export async function setLanguageLS(language: string) {
-  setItem(Storage.KEY.LANGUAGE, language);
+export async function setConfigLS(config: {}) {
+  setItem(Storage.KEY.CONFIG, config);
 }
-export async function removeLanguageLS() {
-  removeItem(Storage.KEY.LANGUAGE);
+export async function removeConfigLS() {
+  removeItem(Storage.KEY.CONFIG);
 }
 
 /**

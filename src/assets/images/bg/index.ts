@@ -1,0 +1,17 @@
+export default [
+  require('./001.png'),
+  require('./002.png'),
+  require('./003.png'),
+  require('./004.png'),
+  require('./005.png'),
+  require('./006.png'),
+  require('./007.png'),
+  require('./008.png'),
+  require('./009.png'),
+  require('./010.png'),
+  require('./011.png'),
+  require('./012.png'),
+  require('./013.png'),
+  require('./014.png'),
+  require('./015.png'),
+];

@@ -6,6 +6,9 @@
  */
 
 export default {
+  navigation: {
+    backText: 'Back',
+  },
   home: {
     tabName: {
       tutorial: 'Tutorial',
@@ -21,5 +24,8 @@ export default {
   },
   me: {
     title: 'Me',
+  },
+  changeBg: {
+    title: 'Choose Background',
   },
 };

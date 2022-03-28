@@ -4,5 +4,8 @@ export const AUTH = {
 };
 
 export const BASE = {
+  SET_CONFIG: 'SET_CONFIG',
   SET_LANGUAGE: 'SET_LANGUAGE',
+  SET_USER_BG: 'SET_USER_BG',
+  SET_USER_AVATAR: 'SET_USER_AVATAR',
 };

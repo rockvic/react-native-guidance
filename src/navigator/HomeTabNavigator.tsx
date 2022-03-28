@@ -10,13 +10,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from '@react-native-community/blur';
 import { useTranslation } from 'react-i18next';
 
+import { HomeTabParamList } from './HomeTabParamList';
 import Icon from '../components/EasyIcon';
+import Images from '../assets/Images';
 
 import Tutorial from '../views/tutorial/Tutorial';
 import Search from '../views/tutorial/Search';
 import Me from '../views/me/Me';
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<HomeTabParamList>();
 
 function HomeTabNavigator() {
   const { t } = useTranslation();
@@ -38,13 +40,13 @@ function HomeTabNavigator() {
       }}
     >
       <Tab.Screen
-        name='HomeTab'
+        name='TurorialTab'
         options={{
           title: t('turorial.title'),
           tabBarLabel: t('home.tabName.tutorial'),
           tabBarIcon: ({ color }) => (
             <Image
-              source={require('../assets/images/react.png')}
+              source={Images.reactLogo}
               resizeMode='contain'
               style={[styles.icon, {tintColor: color}]}
             />

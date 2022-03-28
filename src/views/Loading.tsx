@@ -5,19 +5,22 @@
  */
 
 import React, { useEffect } from 'react';
-import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { StackActions, useNavigation } from '@react-navigation/native';
 
 import log from '../utils/Logger';
 import initI18next from '../languages/I18next';
-import { getLanguageLS, logAllStorage } from '../utils/Storage';
-import { setLanguage } from '../store/actions/base/baseAction';
+import { getConfigLS, logAllStorage } from '../utils/Storage';
+import { setConfig } from '../store/actions/base/baseAction';
+import { initialState as baseInitialState, BaseStateType } from '../store/reducers/base/baseReducer';
 
-export type Props = {};
+type Props = {
+  onLoaded: () => void;
+};
 
-const Loading: React.FC<Props> = () => {
-  const navigation = useNavigation();
+type ConfigType = BaseStateType['config'];
+
+const Loading: React.FC<Props> = ({ onLoaded }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -30,19 +33,18 @@ const Loading: React.FC<Props> = () => {
   async function init() {
     try {
       // TODO: 非调试环境记得注释掉以下代码
-      logAllStorage();
-
+      await logAllStorage();
+      
+      const configLs = await getConfigLS();
+      let config = configLs ? configLs : baseInitialState.config;
       // 初始化语言环境，从本地存储读取上次用户选择的语言
-      const language = await getLanguageLS();
-      const initLang = initI18next(language);
-      // 将所选语言放入 redux
-      dispatch(setLanguage(initLang));
+      const initLang = initI18next(config.language);
+      config.language = initLang;
+      // 将配置文件放入 redux
+      dispatch(setConfig(config));
 
-      // 所有初始化工作完成后，跳转到主界面
-      // 使用 replace 函数，用 Home 替代 Loading，使首页成为导航堆栈的第 0 项
-      navigation.dispatch(
-        StackActions.replace('Home')
-      );
+      // 回调父界面初始化完成
+      onLoaded();
     } catch(e) {
       log.error('Loading.init() > catch error:', e);
     }

@@ -10,7 +10,7 @@ import {useSelector} from 'react-redux';
 
 import log from '../../utils/Logger';
 
-export type Props = {};
+type Props = {};
 
 const Search: FC<Props> = () => {
   const appState = useSelector(state => state);

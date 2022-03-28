@@ -24,7 +24,7 @@ LogBox.ignoreLogs([
   'i18next: init: i18next is already initialized',
 ]);
 
-export type Props = {};
+type Props = {};
 
 const App: FC<Props> = () => {
   return (

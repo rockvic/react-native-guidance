@@ -1,11 +1,22 @@
 import { BASE } from '../../types';
-import { setLanguageLS } from '../../../utils/Storage';
+
+export const setConfig = (config: {}) => {
+  return {
+    type: BASE.SET_CONFIG,
+    payload: config,
+  };
+}
 
 export const setLanguage = (language: string) => {
-  // 将当前所选语言持久化到本地存储
-  setLanguageLS(language);
   return {
     type: BASE.SET_LANGUAGE,
     payload: language,
   };
 };
+
+export const setUserBg = (config: {}) => {
+  return {
+    type: BASE.SET_USER_BG,
+    payload: config,
+  };
+}
