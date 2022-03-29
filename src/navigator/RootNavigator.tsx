@@ -23,7 +23,7 @@ function RootNavigator() {
         initialRouteName="Home"
         screenOptions={{
           headerBackTitle: t('navigation.backText'),
-          headerTintColor: Global.colors.FONT_GRAY,
+          headerTintColor: Global.colors.PRIMARY_FONT,
         }}
       >
         <Stack.Screen name="Home" component={HomeTabNavigator} options={{ headerShown: false }} />

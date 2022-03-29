@@ -4,22 +4,23 @@
  * Author : Victor Huang
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
   Text,
-  TouchableOpacity,
+  // TouchableOpacity,
   ScrollView,
   ImageBackground,
   useWindowDimensions,
   PixelRatio,
+  Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import type { StackNavigationProp } from '@react-navigation/stack';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
+import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
 import { RootStackParamList } from '../../navigator/RootStackParamList';
 import Icon from '../../components/EasyIcon';
@@ -28,6 +29,7 @@ import bgs from '../../assets/images/bg';
 import Global from '../../Global';
 import { setUserBg } from '../../store/actions/base/baseAction';
 import type { StateType } from '../../store/reducers';
+import BottomButtonBar from '../../components/BottomButtonBar';
 
 type ChangeBgNavigationProp = StackNavigationProp<RootStackParamList, 'ChangeBg'>;
 type Props = {
@@ -42,9 +44,13 @@ const ChangeBg: React.FC<Props> = () => {
   const navigation = useNavigation<ChangeBgNavigationProp>();
   const { width } = useWindowDimensions();
   const { bgType, bgIdx } = useSelector((state: StateType) => state.base.config);
+  const [index, setIndex] = useState<number>();
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const insets = useSafeAreaInsets();
+
+  useEffect(() => {
+    setIndex(bgIdx);
+  }, []);
 
   /**
    * 图片点击时的触发函数
@@ -52,8 +58,23 @@ const ChangeBg: React.FC<Props> = () => {
    */
   function onBgImgPress(idx: number) {
     requestAnimationFrame(() => {
-      dispatch(setUserBg({ bgType: 1, bgIdx: idx }));
+      setIndex(idx);
     });
+  }
+
+  /**
+   * 确定点击事件
+   */
+  function onConfirm() {
+    dispatch(setUserBg({ bgType: 1, bgIdx: index }));
+    navigation.goBack();
+  }
+
+  /**
+   * 取消按钮点击事件
+   */
+  function onCancel() {
+    navigation.goBack();
   }
 
   /**
@@ -66,7 +87,7 @@ const ChangeBg: React.FC<Props> = () => {
     // 图片按照 16:10 的宽高比计算图片的高度
     const bgHeight = bgWidth * 10 / 16;
     return bgs.map((source, idx) => {
-      return <TouchableOpacity
+      return <TouchableNativeFeedback
         key={`img_${idx}`}
         onPress={() => onBgImgPress(idx)}
       >
@@ -75,27 +96,29 @@ const ChangeBg: React.FC<Props> = () => {
           source={source}
           resizeMode='cover'
         >
-          {idx === bgIdx ? <View style={styles.bgMask}>
+          {idx === index ? <View style={styles.bgMask}>
             <View style={styles.checkCircle}>
               <Icon iconLib='fa5' name='check' size={10} color='#ffffff' />
             </View>
           </View> : null}
         </ImageBackground>
-      </TouchableOpacity>
+      </TouchableNativeFeedback>
     });
   }
-  log.debug('insets.bottom:', insets.bottom);
+
   return (
     <View style={styles.root}>
       <ScrollView style={styles.rootSv}>
         <View style={styles.bgsContainer}>
           {renderBgs()}
-          {renderBgs()}
         </View>
       </ScrollView>
-      <View style={[styles.bottomBtnsContainer, {height: 40 + insets.bottom}]}>
-        <Text>{t('base.confirm')}</Text>
-      </View>
+      <BottomButtonBar
+        btns={[
+          { title: t('base.confirm'), onPress: onConfirm },
+          { title: t('base.cancel'), onPress: onCancel, btnTextStyle: { color: Global.colors.PRIMARY_FONT } },
+        ]}
+      />
     </View>
   );
 };
@@ -131,18 +154,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#ffffff',
-    backgroundColor: Global.colors.IOS_BLUE,
+    backgroundColor: Global.colors.PRIMARY,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 5,
     marginBottom: 5,
-  },
-  bottomBtnsContainer: {
-    // position: 'absolute',
-    width: '100%',
-    // left: 0,
-    // bottom: 0,
-    backgroundColor: 'rgba(255, 0, 0, .5)',
   },
 });
 

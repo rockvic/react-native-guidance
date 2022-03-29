@@ -8,7 +8,11 @@ export type BaseStateType = {
     // 2 - 相册
     bgType: number;
     bgIdx: number;
+  },
+  barHeights: {
     statusBarHeight: number | undefined;
+    headerBarHeight: number | undefined;
+    tabBarHeight: number | undefined;
   },
 };
 
@@ -17,7 +21,11 @@ export const initialState = {
     language: undefined,
     bgType: 1,
     bgIdx: 0,
+  },
+  barHeights: {
     statusBarHeight: undefined,
+    headerBarHeight: undefined,
+    tabBarHeight: undefined,
   },
 };
 
@@ -47,6 +55,11 @@ export default (state: BaseStateType = initialState, action: Action) => {
       return {
         ...state,
         config: config4Bg,
+      };
+    case BASE.SET_BAR_HEIGHTS:
+      return {
+        ...state,
+        barHeights: action.payload,
       };
     default:
       return state;

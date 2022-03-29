@@ -20,3 +20,10 @@ export const setUserBg = (config: {}) => {
     payload: config,
   };
 }
+
+export const setBarHeights = (config: {}) => {
+  return {
+    type: BASE.SET_BAR_HEIGHTS,
+    payload: config,
+  };
+}

@@ -44,7 +44,7 @@ const avatarSize = 90;
 const avatarOffset = avatarSize * 0.618; // 50;
 
 const Tutorial: FC<Props> = ({ navigation }) => {
-  const { bgType, bgIdx, statusBarHeight } = useSelector((state: StateType) => state.base.config);
+  const { bgType, bgIdx } = useSelector((state: StateType) => state.base.config);
   const bottomTabBarHeight = useBottomTabBarHeight();
   const bgWidth = useWindowDimensions().width;
   const bgHeight = bgWidth * 10 / 16;
@@ -123,7 +123,7 @@ const Tutorial: FC<Props> = ({ navigation }) => {
       <View style={styles.avatarMask}>
         <View style={styles.avatarContainer}>
           <Icon iconLib='fa5' name='robot' size={avatarSize / 2.5}
-            color={Global.colors.FONT_LIGHT_GRAY}
+            color={Global.colors.ASSIST_FONT}
             style={{ paddingBottom: 8 }} solid
           />
         </View>

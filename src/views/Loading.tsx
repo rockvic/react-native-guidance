@@ -5,20 +5,18 @@
  */
 
 import React, { useEffect } from 'react';
-import { StyleSheet, View, ActivityIndicator, StatusBar } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import log from '../utils/Logger';
 import initI18next from '../languages/I18next';
 import { getConfigLS, logAllStorage } from '../utils/Storage';
 import { setConfig } from '../store/actions/base/baseAction';
-import { initialState as baseInitialState, BaseStateType } from '../store/reducers/base/baseReducer';
+import { initialState as baseInitialState } from '../store/reducers/base/baseReducer';
 
 type Props = {
   onLoaded: () => void;
 };
-
-type ConfigType = BaseStateType['config'];
 
 const Loading: React.FC<Props> = ({ onLoaded }) => {
   const dispatch = useDispatch();
@@ -40,7 +38,6 @@ const Loading: React.FC<Props> = ({ onLoaded }) => {
       // 初始化语言环境，从本地存储读取上次用户选择的语言
       const initLang = initI18next(config.language);
       config.language = initLang;
-      config.statusBarHeight = StatusBar.currentHeight;
       // 将配置文件放入 redux
       dispatch(setConfig(config));
 

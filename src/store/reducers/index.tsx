@@ -1,7 +1,7 @@
-import {combineReducers, Reducer} from 'redux';
+import { combineReducers, Reducer } from 'redux';
 
-import base, {BaseStateType} from './base/baseReducer';
-import auth, {AuthStateType} from './base/authReducer';
+import base, { BaseStateType } from './base/baseReducer';
+import auth, { AuthStateType } from './base/authReducer';
 
 export interface StateType {
   base: BaseStateType;

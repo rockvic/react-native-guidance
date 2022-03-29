@@ -7,7 +7,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
-export type Props = {};
+type Props = {};
 
 const Comp: React.FC<Props> = () => {
   return (
