@@ -7,4 +7,4 @@ Develop guidance of React Native
 
 以下是规划中所有教程的规划图，东西较多，敬请期待！
 
-![教程规划](https://rockvic.github.io/assets/images/rng/react-native-guidance.gif)
+![教程规划](https://github.com/rockvic/react-native-guidance/blob/main/React%20Native%20Guidance.gif)
