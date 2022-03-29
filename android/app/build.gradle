@@ -131,11 +131,11 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.reactnativeguidance"
+        applicationId "com.rockvic.rng" // ← ← 修改 applicationId ，与 iOS 版 Bundle ID 保持一致
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 1       // ← ← 每次发版前修改版本代码
+        versionName "0.1"   // ← ← 每次发版前修改版本号
     }
     splits {
         abi {
@@ -223,5 +223,8 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.implementation
     into 'libs'
 }
+
+// added on 2022/3/29 for react-native-vector-icons
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)

@@ -1,5 +1,5 @@
-import React, { FC, useState } from 'react';
-import { View, StatusBar } from 'react-native';
+import React, { FC, useEffect, useState } from 'react';
+import { View, StatusBar, Platform } from 'react-native';
 
 import RootNavigator from '../navigator/RootNavigator';
 import Loading from './Loading';
@@ -8,6 +8,12 @@ type Props = {};
 
 const MainView: FC<Props> = () => {
   const [loaded, setLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      StatusBar.setBackgroundColor('#ffffff');
+    }
+  }, []);
 
   /**
    * 初始化完成后回调

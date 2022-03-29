@@ -8,6 +8,7 @@ export type BaseStateType = {
     // 2 - 相册
     bgType: number;
     bgIdx: number;
+    statusBarHeight: number | undefined;
   },
 };
 
@@ -16,6 +17,7 @@ export const initialState = {
     language: undefined,
     bgType: 1,
     bgIdx: 0,
+    statusBarHeight: undefined,
   },
 };
 

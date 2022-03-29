@@ -6,6 +6,10 @@
  */
 
 export default {
+  base: {
+    confirm: 'OK',
+    cancel: 'Cancel',
+  },
   navigation: {
     backText: 'Back',
   },

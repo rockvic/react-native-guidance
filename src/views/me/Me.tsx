@@ -6,6 +6,7 @@
 
 import React, { FC, useEffect, useState, useRef } from 'react';
 import {
+  Platform,
   View,
   Text,
   StyleSheet,
@@ -43,22 +44,36 @@ const avatarSize = 90;
 const avatarOffset = avatarSize * 0.618; // 50;
 
 const Tutorial: FC<Props> = ({ navigation }) => {
-  const { bgType, bgIdx } = useSelector((state: StateType) => state.base.config);
+  const { bgType, bgIdx, statusBarHeight } = useSelector((state: StateType) => state.base.config);
   const bottomTabBarHeight = useBottomTabBarHeight();
   const bgWidth = useWindowDimensions().width;
   const bgHeight = bgWidth * 10 / 16;
   const [scrollY] = useState(new Animated.Value(0));
 
+  // 监听当前界面的 focus 事件
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      StatusBar.setBarStyle('light-content');
+      if (Platform.OS === 'android') {
+        // StatusBar.setTranslucent(true);
+        StatusBar.setHidden(true);
+      } else {
+        // 将 StatusBar 改为浅色
+        StatusBar.setBarStyle('light-content');
+      }
     });
     return unsubscribe;
   }, [navigation]);
 
+  // 监听当前界面的 blur 事件
   useEffect(() => {
     const unsubscribe = navigation.addListener('blur', () => {
-      StatusBar.setBarStyle('dark-content');
+      if (Platform.OS === 'android') {
+        // StatusBar.setTranslucent(false);
+        StatusBar.setHidden(false);
+      } else {
+        // 将 StatusBar 还原为全局的深色
+        StatusBar.setBarStyle('dark-content');
+      }
     });
     return unsubscribe;
   }, [navigation]);
@@ -68,6 +83,7 @@ const Tutorial: FC<Props> = ({ navigation }) => {
    */
   function changeBg() {
     requestAnimationFrame(() => {
+      // 本例子中使用 props 中传递的 navigation 做导航跳转
       navigation.navigate('ChangeBg');
     });
   }
@@ -81,6 +97,7 @@ const Tutorial: FC<Props> = ({ navigation }) => {
       style={[styles.bg, {
         width: bgWidth,
         height: bgHeight,
+        // top: Platform.OS === 'android' ? -(statusBarHeight! | 40)! : 0,
         transform: [{
           translateY: scrollY.interpolate({
             inputRange: [-bgHeight, 0, bgHeight],
@@ -116,7 +133,6 @@ const Tutorial: FC<Props> = ({ navigation }) => {
 
   return (
     <View style={[styles.root, { /* marginBottom: bottomTabBarHeight */ }]}>
-      {/* <StatusBar barStyle='light-content' /> */}
       {renderBg()}
       <Animated.ScrollView style={[styles.rootSv]}
         onScroll={Animated.event(

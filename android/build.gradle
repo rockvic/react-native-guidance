@@ -37,6 +37,8 @@ allprojects {
             }
         }
         google()
+        // added on 2022/3/29 @react-native-community/blur 还在使用 jcenter() 载入第三方包
+        jcenter()
         maven { url 'https://www.jitpack.io' }
     }
 }

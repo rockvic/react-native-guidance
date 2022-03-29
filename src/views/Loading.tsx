@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, StatusBar } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import log from '../utils/Logger';
@@ -40,6 +40,7 @@ const Loading: React.FC<Props> = ({ onLoaded }) => {
       // 初始化语言环境，从本地存储读取上次用户选择的语言
       const initLang = initI18next(config.language);
       config.language = initLang;
+      config.statusBarHeight = StatusBar.currentHeight;
       // 将配置文件放入 redux
       dispatch(setConfig(config));
 

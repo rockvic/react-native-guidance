@@ -6,6 +6,10 @@
  */
 
 export default {
+  base: {
+    confirm: '确定',
+    cancel: '取消',
+  },
   navigation: {
     backText: '返回',
   },
