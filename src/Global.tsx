@@ -11,14 +11,26 @@ class Global extends Object {
   // 常用颜色
   static colors = {
     /** 规范配色 */
-    PRIMARY:          'rgba(0,122,255,1)', // 主题色
-    WARNING:          'rgba(255,59,48,1)', // 重要信息/警示色
-    ASSIST:           '#0069FF', // 辅助色
-    PRIMARY_FONT:     '#242424', // 正文文案
-    ASSIST_FONT:      '#989898', // 辅助文案
-    SEP_LINE:         '#D6D6D6', // 分割线/描边/置灰
-    BG:               'rgba(242, 242, 242, 1)', // 背景色
-    LINE:             'rgba(230,230,230,1)', // '#E6E6E6', 工作区分割线颜色
+    // 主色
+    PRIMARY:            '#409EFF',
+    // 辅助色
+    SUCCESS:            '#67C23A',
+    WARNING:            '#E6A23C',
+    DANGER:             '#F56C6C',
+    INFO:               '#909399',
+    // 中性色
+    // 文字
+    PRIMARY_TEXT:       '#303133',
+    REGULAR_TEXT:       '#606266',
+    SECONDARY_TEXT:     '#909399',
+    PLACEHOLDER_TEXT:   '#C0C4CC',
+    // 边框
+    BORDER_BASE:        '#DCDFE6',
+    BORDER_LIGHT:       '#E4E7ED',
+    BORDER_LIGHTER:     '#EBEEF5',
+    BORDER_EXTRALIGHT:  '#F2F6FC',
+    // 背景
+    BACKGROUND:         'rgba(242, 242, 242, 1)', // 背景色
 
     /* FONT: 'rgba(0,0,0,1)', // '#000000', 工作区主字体颜色：（黑）
     FONT_GRAY: 'rgba(93,93,93,1)', // '#5D5D5D', 工作区主字体颜色：（深）
@@ -44,12 +56,6 @@ class Global extends Object {
   };
 
   static styles = StyleSheet.create({
-    FONT_COLOR_PRIMARY: {
-      color: Global.colors.PRIMARY_FONT,
-    },
-    FONT_COLOR_ASSIST: {
-      color: Global.colors.ASSIST_FONT,
-    },
   });
 }
 

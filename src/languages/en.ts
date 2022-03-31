@@ -9,6 +9,8 @@ export default {
   base: {
     confirm: 'OK',
     cancel: 'Cancel',
+    openCameraRoll: 'Open Camera Roll',
+    openSystemSettings: 'Open System Settings{{extInfo}}',
   },
   navigation: {
     backText: 'Back',
@@ -31,5 +33,16 @@ export default {
   },
   changeBg: {
     title: 'Choose Background',
+  },
+  cameraRoll: {
+    title: 'Camera Roll',
+    permissionTitle: 'Album access requires authorization',
+    permissionDeniedDesc: 'You have not obtained the album access permission, please authorize it first.',
+    permissionNeverAskAgainDesc: 'You have set the permission to " Disable and no more queries ". You can access the Settings page to obtain the storage permission of the device.',
+    requestPermission: 'Get Permission',
+    allPhotos: 'All photos',
+  },
+  chooseAlbum: {
+    title: 'Choose Album',
   },
 };

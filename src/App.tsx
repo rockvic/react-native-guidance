@@ -22,6 +22,7 @@ LogBox.ignoreLogs([
   'startLoadWithResult invoked with invalid lockIdentifier',
   'Did not receive response to shouldStartLoad in time',
   'i18next: init: i18next is already initialized',
+  'Non-serializable values were found in the navigation state',
 ]);
 
 type Props = {};

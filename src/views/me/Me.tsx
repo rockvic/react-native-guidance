@@ -18,32 +18,18 @@ import {
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
 
-import type { CompositeNavigationProp } from '@react-navigation/native';
-import type { StackNavigationProp } from '@react-navigation/stack';
-import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import type { HomeTabScreenProps } from '../../navigator/types';
+import type { StateType } from '../../store/reducers';
 
 import Global from '../../Global';
 import log from '../../utils/Logger';
 import Icon from '../../components/EasyIcon';
 import bgs from '../../assets/images/bg';
 
-import type { RootStackParamList } from '../../navigator/RootStackParamList';
-import type { HomeTabParamList } from '../../navigator/HomeTabParamList';
-import type { StateType } from '../../store/reducers';
-
-type MeNavigationProp = CompositeNavigationProp<
-  StackNavigationProp<RootStackParamList, 'Home'>,
-  BottomTabNavigationProp<HomeTabParamList, 'MeTab'>
->;
-
-type Props = {
-  navigation: MeNavigationProp;
-};
-
 const avatarSize = 90;
 const avatarOffset = avatarSize * 0.618; // 50;
 
-const Tutorial: FC<Props> = ({ navigation }) => {
+function Tutorial({ navigation }: HomeTabScreenProps<'MeTab'>) {
   const { bgType, bgIdx } = useSelector((state: StateType) => state.base.config);
   const bottomTabBarHeight = useBottomTabBarHeight();
   const bgWidth = useWindowDimensions().width;
@@ -123,7 +109,7 @@ const Tutorial: FC<Props> = ({ navigation }) => {
       <View style={styles.avatarMask}>
         <View style={styles.avatarContainer}>
           <Icon iconLib='fa5' name='robot' size={avatarSize / 2.5}
-            color={Global.colors.ASSIST_FONT}
+            color={Global.colors.SECONDARY_TEXT}
             style={{ paddingBottom: 8 }} solid
           />
         </View>
@@ -171,7 +157,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: Global.colors.BG,
+    backgroundColor: Global.colors.BACKGROUND,
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
   },
@@ -186,7 +172,7 @@ const styles = StyleSheet.create({
     width: avatarSize,
     height: avatarSize,
     borderRadius: avatarSize / 2,
-    backgroundColor: Global.colors.BG,
+    backgroundColor: Global.colors.BACKGROUND,
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -8,40 +8,32 @@ import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
-  // TouchableOpacity,
   ScrollView,
   ImageBackground,
   useWindowDimensions,
   PixelRatio,
-  Platform,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import type { StackNavigationProp } from '@react-navigation/stack';
 import { useTranslation } from 'react-i18next';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
 
-import { RootStackParamList } from '../../navigator/RootStackParamList';
-import Icon from '../../components/EasyIcon';
-import log from '../../utils/Logger';
-import bgs from '../../assets/images/bg';
-import Global from '../../Global';
-import { setUserBg } from '../../store/actions/base/baseAction';
+import type { RootStackScreenProps } from '../../navigator/types';
 import type { StateType } from '../../store/reducers';
-import BottomButtonBar from '../../components/BottomButtonBar';
 
-type ChangeBgNavigationProp = StackNavigationProp<RootStackParamList, 'ChangeBg'>;
-type Props = {
-  navigation: ChangeBgNavigationProp,
-};
+import Global from '../../Global';
+import log from '../../utils/Logger';
+import Icon from '../../components/EasyIcon';
+import bgs from '../../assets/images/bg';
+import BottomButtonBar from '../../components/BottomButtonBar';
+import { setUserBg } from '../../store/actions/base/baseAction';
 
 // 图片列表显示时每张图片的间隔距离
 const bgGap = 5;
 
-const ChangeBg: React.FC<Props> = () => {
+function ChangeBg() {
   // 本例中使用 useNavigation 获取 navigation 做导航跳转
-  const navigation = useNavigation<ChangeBgNavigationProp>();
+  const navigation = useNavigation<RootStackScreenProps<'ChangeBg'>['navigation']>();
   const { width } = useWindowDimensions();
   const { bgType, bgIdx } = useSelector((state: StateType) => state.base.config);
   const [index, setIndex] = useState<number>();
@@ -116,7 +108,13 @@ const ChangeBg: React.FC<Props> = () => {
       <BottomButtonBar
         btns={[
           { title: t('base.confirm'), onPress: onConfirm },
-          { title: t('base.cancel'), onPress: onCancel, btnTextStyle: { color: Global.colors.PRIMARY_FONT } },
+          { 
+            title: t('base.openCameraRoll'), 
+            btnStyle: { flex: 1.5 },
+            btnTextStyle: { color: Global.colors.PRIMARY_TEXT },
+            onPress: () => { navigation.navigate('CameraRoll') }, 
+          },
+          { title: t('base.cancel'), onPress: onCancel, btnTextStyle: { color: Global.colors.PRIMARY_TEXT } },
         ]}
       />
     </View>

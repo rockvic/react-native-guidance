@@ -32,9 +32,11 @@ export type Props = {
   style?: ViewStyle | ViewStyle[];
   // 子元素
   children?: React.ReactNode | undefined;
+  // 是否使用绝对位置，如果为 true，则使用绝对定位固定在底部
+  absolutely?: boolean | undefined;
 };
 
-const BottomButtonBar: React.FC<Props> = ({btns, style, children}) => {
+const BottomButtonBar: React.FC<Props> = ({btns, style, children, absolutely}) => {
   const insets = useSafeAreaInsets();
   const { tabBarHeight } = useSelector((state: StateType) => state.base.barHeights);
 
@@ -42,6 +44,7 @@ const BottomButtonBar: React.FC<Props> = ({btns, style, children}) => {
     style={[
       styles.bottomBtnsContainer,
       { height: tabBarHeight },
+      absolutely ? styles.absolutely : null,
       style && style,
     ] as ViewStyle}
   >
@@ -73,6 +76,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'rgba(255, 255, 255, .5)',
+  },
+  absolutely: {
+    position: 'absolute',
+    left: 0,
+    bottom: 0,
   },
   bottomBtn: {
     flex: 1,

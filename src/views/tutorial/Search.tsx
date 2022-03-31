@@ -4,15 +4,17 @@
  * Author : Victor Huang
  */
 
-import React, {FC} from 'react';
-import {View, StyleSheet} from 'react-native';
-import {useSelector} from 'react-redux';
+import React, { FC } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
+
+import type { HomeTabScreenProps } from '../../navigator/types';
 
 import log from '../../utils/Logger';
 
 type Props = {};
 
-const Search: FC<Props> = () => {
+function Search() {
   const appState = useSelector(state => state);
 
   log.debug('11111');

@@ -2,6 +2,11 @@
   package="com.reactnativeguidance">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 外部存储读写权限，Request by flowing modules: 
+      @react-native-community/cameraroll - 相册
+    -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
       android:name=".MainApplication"

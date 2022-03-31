@@ -10,13 +10,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from '@react-native-community/blur';
 import { useTranslation } from 'react-i18next';
 
-import { HomeTabParamList } from './HomeTabParamList';
+import { HomeTabParamList } from './types';
 import Icon from '../components/EasyIcon';
 import Images from '../assets/Images';
 
 import Tutorial from '../views/tutorial/Tutorial';
 import Search from '../views/tutorial/Search';
 import Me from '../views/me/Me';
+import Global from '../Global';
 
 const Tab = createBottomTabNavigator<HomeTabParamList>();
 
@@ -27,7 +28,8 @@ function HomeTabNavigator() {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: { position: 'absolute' },
-        tabBarActiveTintColor: 'rgb(28, 30, 33)',
+        tabBarActiveTintColor: Global.colors.PRIMARY_TEXT,
+        tabBarInactiveTintColor: Global.colors.SECONDARY_TEXT,
         tabBarBackground: () => (
           <BlurView
             style={StyleSheet.absoluteFill}

@@ -9,27 +9,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useHeaderHeight } from '@react-navigation/elements';
 
-import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import type { CompositeNavigationProp } from '@react-navigation/native';
-import type { StackNavigationProp } from '@react-navigation/stack';
-
-import type { HomeTabParamList } from '../../navigator/HomeTabParamList';
-import type { RootStackParamList } from '../../navigator/RootStackParamList';
-
-import { setBarHeights } from '../../store/actions/base/baseAction';
+import type { HomeTabScreenProps } from '../../navigator/types';
 
 import log from '../../utils/Logger';
+import { setBarHeights } from '../../store/actions/base/baseAction';
 
-type TutorialNavigationProp = CompositeNavigationProp<
-  StackNavigationProp<RootStackParamList, 'Home'>,
-  BottomTabNavigationProp<HomeTabParamList, 'MeTab'>
->;
-
-type Props = {
-  navigation: TutorialNavigationProp;
-};
-
-const Tutorial: FC<Props> = ({ navigation }) => {
+function Tutorial({ navigation }: HomeTabScreenProps<'TurorialTab'>) {
   const dispatch = useDispatch();
   const statusBarHeight = StatusBar.currentHeight;
   const headerBarHeight = useHeaderHeight();
