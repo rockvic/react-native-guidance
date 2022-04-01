@@ -4,7 +4,7 @@
  * Author : Victor Huang
  */
 
-import React, { FC, useEffect, useState, useRef } from 'react';
+import React, { FC, useEffect, useState, useRef, useCallback } from 'react';
 import {
   Platform,
   View,
@@ -25,6 +25,7 @@ import Global from '../../Global';
 import log from '../../utils/Logger';
 import Icon from '../../components/EasyIcon';
 import bgs from '../../assets/images/bg';
+import { useFocusEffect } from '@react-navigation/native';
 
 const avatarSize = 90;
 const avatarOffset = avatarSize * 0.618; // 50;
@@ -36,33 +37,21 @@ function Tutorial({ navigation }: HomeTabScreenProps<'MeTab'>) {
   const bgHeight = bgWidth * 10 / 16;
   const [scrollY] = useState(new Animated.Value(0));
 
-  // 监听当前界面的 focus 事件
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('light-content');
       if (Platform.OS === 'android') {
-        // StatusBar.setTranslucent(true);
-        StatusBar.setHidden(true);
-      } else {
-        // 将 StatusBar 改为浅色
-        StatusBar.setBarStyle('light-content');
+        StatusBar.setBackgroundColor('rgba(0, 0, 0, .2)');
       }
-    });
-    return unsubscribe;
-  }, [navigation]);
-
-  // 监听当前界面的 blur 事件
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('blur', () => {
-      if (Platform.OS === 'android') {
-        // StatusBar.setTranslucent(false);
-        StatusBar.setHidden(false);
-      } else {
+      return () => {
         // 将 StatusBar 还原为全局的深色
         StatusBar.setBarStyle('dark-content');
-      }
-    });
-    return unsubscribe;
-  }, [navigation]);
+        if (Platform.OS === 'android') {
+          StatusBar.setBackgroundColor('white');
+        }
+      };
+    }, [])
+  )
 
   /**
    * 变更背景图

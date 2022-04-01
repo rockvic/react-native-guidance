@@ -4,7 +4,7 @@
  * Author : Victor Huang
  */
 
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -15,6 +15,8 @@ import {
   FlatList,
   useWindowDimensions,
   ImageBackground,
+  Image,
+  StatusBar,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { RectButton } from 'react-native-gesture-handler';
@@ -29,39 +31,60 @@ import log from '../../utils/Logger';
 import Icon from '../../components/EasyIcon';
 import ViewUtil from '../../utils/ViewUtil';
 import BottomButtonBar from '../../components/BottomButtonBar';
+import { useFocusEffect } from '@react-navigation/native';
 
 // 默认相册 - All，显示所有照片
 const defaultAlbum = "All";
 // 默认查询的类型 - All，显示所有照片及视频
 const defaultAssetType = "All";
+
 // 每次读取的照片张数
-const pageSize = 50;
+const photosPerPage = 200;
+// 每行显示的照片数量
+const photosPerRow = 4;
 // 图片列表显示时每张图片的间隔距离
-const bgGap = 2;
+const photoGap = 2;
 
 function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>) {
   const { t } = useTranslation();
   const { width } = useWindowDimensions();
+  // props passed by route.params
+  const initChoosedPhotos = route?.params?.initChoosedPhotos || [];
+  const multiple = route?.params?.multiple || false;
+  const onChoosed = route?.params?.onChoosed;
   // Android: 是否已经获取访问相册的权限？
   // PermissionStatus: 'granted' | 'denied' | 'never_ask_again'
   const [permissionStatus, setPermissionStatus] = useState<PermissionStatus | undefined>();
-  const [loading, setLoading] = useState<boolean>(true);
   const [assetType, setAssetType] = useState<CameraRoll.AssetType>(defaultAssetType);
-  const [albums, setAlbums] = useState<CameraRoll.Album[]>();
   const [selectedAlbum, setSelectedAlbum] = useState<string>(defaultAlbum);
-  const [retrievedPhotos, setRetrievedPhotos] = useState<CameraRoll.PhotoIdentifiersPage>();
+  const [pageInfo, setPageInfo] = useState<CameraRoll.PhotoIdentifiersPage['page_info'] | undefined>();
   const [photosData, setPhotosData] = useState<CameraRoll.PhotoIdentifier[]>([]);
-  const [selectedPhotos, setSelectedPhotos] = useState<string>();
+  const [selectedPhotos, setSelectedPhotos] = useState<string[]>(initChoosedPhotos);
+  const [previewPhoto, setPreviewPhoto] = useState<string>();
+  // 控制下拉刷新
+  const [pullToRefreshing, setPullToRefreshing] = useState<boolean>(false);
+  // 控制无限加载
+  const [infiniteLoading, setInfiniteLoading] = useState<boolean>(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('light-content');
+      if (Platform.OS === 'android')
+        StatusBar.setBackgroundColor('#1A1A1A');
+      return () => {};
+    }, [])
+  )
 
   useLayoutEffect(() => {
     // 设置定制化的 Header
     const options: Partial<StackNavigationOptions> = {
+      headerTintColor: Global.colors.BORDER_EXTRALIGHT,
       headerStyle: {
         backgroundColor: '#1A1A1A',
       },
-      headerTitleStyle: {
+      /* headerTitleStyle: {
         color: Global.colors.BORDER_EXTRALIGHT,
-      },
+      }, */
       headerShadowVisible: false,
     };
     if (Platform.OS === 'ios') {
@@ -70,20 +93,34 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
     navigation.setOptions(options);
   }, [navigation]);
 
+  /**
+   * 获取自定义的后退按钮
+   * @param props 后退按钮获取的相关属性
+   * @returns 
+   */
+  function getCloseBtnOnHeader(props: HeaderBackButtonProps): React.ReactNode {
+    return <RectButton style={styles.backBtn} onPress={() => navigation.goBack()}>
+      <Icon name='chevron-down-sharp' size={28} color={Global.colors.BORDER_EXTRALIGHT} />
+    </RectButton>;
+  }
+
   useEffect(() => {
+    // 默认读取图片，后续支持可传入查询资产类型
+    setAssetType('Photos');
     // 如果是Android，先检查权限
     if (Platform.OS === 'android') {
       hasAndroidPermission();
       return;
-    } else { // 如果iOS，直接获取相册
-      setAssetType('Photos');
-      getAlbums();
+    } else { // 如果iOS，直接获取照片
+      setPullToRefreshing(true);
     }
   }, []);
 
   useEffect(() => {
     // Android下监听权限变化，如果已授权，则开始获取相册信息
-    if (permissionStatus === 'granted') getAlbums();
+    if (permissionStatus === 'granted') {
+      setPullToRefreshing(true);
+    }
   }, [permissionStatus]);
 
   /**
@@ -97,17 +134,6 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
     }
     const status = await PermissionsAndroid.request(permission);
     setPermissionStatus(status);
-  }
-
-  /**
-   * 获取自定义的后退按钮
-   * @param props 后退按钮获取的相关属性
-   * @returns 
-   */
-  function getCloseBtnOnHeader(props: HeaderBackButtonProps): React.ReactNode {
-    return <RectButton style={styles.backBtn} onPress={() => navigation.goBack()}>
-      <Icon name='chevron-down-sharp' size={28} color={Global.colors.BORDER_EXTRALIGHT} />
-    </RectButton>;
   }
 
   /**
@@ -131,43 +157,53 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
     </View>;
   }
 
-  /**
-   * 获取相册
-   */
-  async function getAlbums() {
-    try {
-      const albums: CameraRoll.Album[] = await CameraRoll.getAlbums({
-        assetType,
-      });
-      log.debug('albums:', albums);
-      setAlbums(albums);
-      getPhotos(defaultAlbum);
-    } catch (e) {
-      log.error('MyCameraRoll.getAlbums() > 获取相册发生错误 : ', e);
-    }
-  }
+  useEffect(() => {
+    if ((pullToRefreshing && infiniteLoading) || (!pullToRefreshing && !infiniteLoading))
+      return;
+    getPhotos();
+  }, [pullToRefreshing, infiniteLoading]);
 
   /**
    * 根据相册获取照片列表
-   * 如果相册名称不传，则显示所有照片
-   * @param albumName 相册名称
    */
-  async function getPhotos(albumName: string | undefined) {
-    setLoading(true);
+  async function getPhotos() {
+    // 无限加载时，如果 has_next_page === false，则终止查询
+    if (infiniteLoading && pageInfo && typeof pageInfo.has_next_page === 'boolean' && pageInfo.has_next_page === false) {
+      setPullToRefreshing(false);
+      setInfiniteLoading(false);
+      return;
+    }
     try {
-      const groupTypes: 'All' | 'Album' = albumName === defaultAlbum ? defaultAlbum : 'Album';
-      const photos: CameraRoll.PhotoIdentifiersPage = await CameraRoll.getPhotos({
-        first: pageSize,
-        groupTypes,
-        groupName: albumName,
+      const groupTypes: 'All' | 'Album' = selectedAlbum === defaultAlbum ? defaultAlbum : 'Album';
+      let retrieveOptions: CameraRoll.GetPhotosParams = {
+        first: photosPerPage,
         assetType,
-      });
-      log.debug('MyCameraRoll.getPhotos() > retrieved photos : ', photos);
-      setRetrievedPhotos(photos);
-      setPhotosData(photos.edges);
-      setLoading(false);
+      };
+      // 无限加载时，如果 has_next_page === true，则增加查询属性 'after'。
+      if (infiniteLoading && pageInfo?.has_next_page)
+        retrieveOptions['after'] = pageInfo.end_cursor;
+      if (selectedAlbum !== defaultAlbum)
+        retrieveOptions = {...retrieveOptions, ...{
+          groupTypes,
+          groupName: selectedAlbum,
+        }};
+
+      // TODO: 翻页查询照片在 Android 下存在 bug.已提交官方
+      log.debug('MyCameraRoll.getPhotos() > retrieveOptions : ', retrieveOptions);
+      const retrievedPhotos: CameraRoll.PhotoIdentifiersPage = await CameraRoll.getPhotos(retrieveOptions);
+      log.debug('MyCameraRoll.getPhotos() > retrieved photos : ', retrievedPhotos);
+
+      setPreviewPhoto(retrievedPhotos.edges[0].node.image.uri);
+      setPageInfo(retrievedPhotos.page_info);
+      // 下拉刷新需清除现有数据，重新加载新数据
+      // 无限加载在原数据基础上在尾部拼接新数据
+      setPhotosData((pullToRefreshing ? [] : photosData).concat(retrievedPhotos.edges));
+
+      setPullToRefreshing(false);
+      setInfiniteLoading(false);
     } catch (e) {
-      setLoading(false);
+      setPullToRefreshing(false);
+      setInfiniteLoading(false);
       log.error('MyCameraRoll.getPhotos() > 获取照片列表发生错误 : ', e);
     }
   }
@@ -177,9 +213,16 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
    */
   function renderPreviewView() {
     return <View style={styles.previewView}>
-
+      {previewPhoto ? <Image
+        style={styles.previewImg}
+        source={{ uri:  previewPhoto }}
+      /> : null}
     </View>;
   }
+
+  useEffect(() => {
+    setPullToRefreshing(true);
+  }, [selectedAlbum]);
 
   /**
    * 渲染工具栏
@@ -191,7 +234,7 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
         style={styles.albumBtn}
         onPress={() => {
           navigation.navigate('ChooseAlbum', {
-            onChoosed: album => setSelectedAlbum(album),
+            onChoosed: async album => setSelectedAlbum(album),
             initAlbumName: selectedAlbum,
           });
         }}
@@ -201,7 +244,29 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
         </Text>
         <Icon name='chevron-down-sharp' size={20} color={Global.colors.BORDER_EXTRALIGHT} />
       </RectButton>
-    </View>; 
+      <Text style={styles.selectedCount}>已选中 {selectedPhotos.length} 项</Text>
+    </View>;
+  }
+
+  /**
+   * 选中图片
+   * @param uri 图片的资源路径
+   */
+  function onSelectPhoto(uri: string) {
+    setPreviewPhoto(uri);
+    if (!multiple) {
+      if (selectedPhotos[0] === uri)
+        setSelectedPhotos([]);
+      else
+        setSelectedPhotos([uri]);
+    } else {
+      let tmpPhotos = selectedPhotos.concat([]);
+      if (tmpPhotos.indexOf(uri) !== -1)
+        tmpPhotos.splice(tmpPhotos.indexOf(uri), 1);
+      else
+        tmpPhotos.push(uri);
+      setSelectedPhotos(tmpPhotos);
+    }
   }
 
   /**
@@ -211,18 +276,20 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
   function renderPhotosItem({ item }: { item: CameraRoll.PhotoIdentifier }) {
     const { node } = item;
     // 每行显示 3 张，计算每张图片的宽度
-    const bgWidth = ((width - bgGap * 5) / 4);
-    const bgHeight = bgWidth;
+    const photoWidth = ((width - photoGap * (photosPerRow + 1)) / photosPerRow);
+    const photoHeight = photoWidth;
     return <ImageBackground
-      style={[styles.photo, { width: bgWidth, height: bgHeight }]}
+      style={[styles.photo, { width: photoWidth, height: photoHeight }]}
       source={{ uri: node.image.uri }}
       resizeMode='cover'
     >
-      {/* {idx === index ? <View style={styles.bgMask}>
-        <View style={styles.checkCircle}>
-          <Icon iconLib='fa5' name='check' size={10} color='#ffffff' />
-        </View>
-      </View> : null} */}
+      <RectButton style={styles.photoBtn} onPress={() => onSelectPhoto(node.image.uri)}>
+        {selectedPhotos.includes(node.image.uri) ? <View style={styles.bgMask}>
+          <View style={styles.checkCircle}>
+            <Icon iconLib='fa5' name='check' size={10} color='#ffffff' />
+          </View>
+        </View> : null}
+      </RectButton>
     </ImageBackground>;
   }
 
@@ -233,12 +300,17 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
     return <FlatList
       keyExtractor={(item, idx) => `_photo_${idx}`}
       data={photosData}
-      refreshing={loading}
       renderItem={renderPhotosItem}
-      ListFooterComponent={<View style={{ height: bgGap }} />}
+      ListFooterComponent={<View style={{ height: photoGap }} />}
       horizontal={false}
-      numColumns={4}
+      numColumns={photosPerRow}
       style={[styles.photos]}
+      // 下拉刷新及无限加载
+      refreshing={pullToRefreshing}
+      onRefresh={() => setPullToRefreshing(true)}
+      // 无限加载
+      onEndReached={() => setInfiniteLoading(true)}
+      onEndReachedThreshold={0.1}
     />;
   }
 
@@ -280,6 +352,7 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    backgroundColor: '#262626',
   },
   centeredContent: {
     alignItems: 'center',
@@ -308,7 +381,11 @@ const styles = StyleSheet.create({
   // 预览区域
   previewView: {
     height: '30%',
-    backgroundColor: '#262626',
+  },
+  previewImg: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
   },
   // 工具栏
   toolbar: {
@@ -329,17 +406,47 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginRight: 5,
   },
+  selectedCount: {
+    flex: 1,
+    color: Global.colors.BORDER_EXTRALIGHT,
+    fontSize: 12,
+    fontWeight: '600',
+    textAlign: 'right',
+    paddingRight: 10,
+  },
   // 照片列表
   photos: {
     flex: 1,
-    paddingLeft: bgGap,
-    paddingTop: bgGap,
-    backgroundColor: '#262626',
+    paddingLeft: photoGap,
+    paddingTop: photoGap,
   },
   photo: {
-    marginRight: bgGap,
-    marginBottom: bgGap,
+    marginRight: photoGap,
+    marginBottom: photoGap,
     backgroundColor: '#1A1A1A',
+  },
+  photoBtn: {
+    width: '100%',
+    height: '100%',
+  },
+  bgMask: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0, 0, 0, .2)',
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
+  },
+  checkCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff',
+    backgroundColor: Global.colors.PRIMARY,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 5,
+    marginBottom: 5,
   },
   // 底端工具栏
   bottomBar: {

@@ -4,8 +4,8 @@
  * Author : Victor Huang
  */
 
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { StyleSheet, View, Text, Platform, FlatList, Image } from 'react-native';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { StyleSheet, View, Text, Platform, FlatList, Image, StatusBar } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
 import CameraRoll from '@react-native-community/cameraroll';
@@ -19,11 +19,12 @@ import type { RootStackScreenProps } from '../../navigator/types';
 import Global from '../../Global';
 import log from '../../utils/Logger';
 import Icon from '../../components/EasyIcon';
+import { useFocusEffect } from '@react-navigation/native';
 
 // 默认相册 - All，显示所有照片
 const defaultAlbum = "All";
 // 默认查询的类型 - All，显示所有照片及视频
-const defaultAssetType = "All";
+const defaultAssetType = "Photos";
 // 每次读取的照片张数
 const pageSize = 50;
 
@@ -36,17 +37,30 @@ function ChooseAlbum({ navigation, route }: RootStackScreenProps<'ChooseAlbum'>)
   const [assetType, setAssetType] = useState<CameraRoll.AssetType>(defaultAssetType);
   const [albums, setAlbums] = useState<CameraRoll.Album[]>([]);
   const [thumbnails, setThumbnails] = useState<Array<CameraRoll.PhotoIdentifier | undefined>>();
-  const [selectedAlbum, setSelectedAlbum] = useState<string>(defaultAlbum);
+
+  /* useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('light-content');
+      if (Platform.OS === 'android')
+        StatusBar.setBackgroundColor('#1A1A1A');
+      return () => {
+        StatusBar.setBarStyle('dark-content');
+        if (Platform.OS === 'android')
+          StatusBar.setBackgroundColor('white');
+      };
+    }, [])
+  ) */
 
   useLayoutEffect(() => {
     // 设置定制化的 Header
     const options: Partial<StackNavigationOptions> = {
+      headerTintColor: Global.colors.BORDER_EXTRALIGHT,
       headerStyle: {
         backgroundColor: '#1A1A1A',
       },
-      headerTitleStyle: {
+      /* headerTitleStyle: {
         color: Global.colors.BORDER_EXTRALIGHT,
-      },
+      }, */
       headerShadowVisible: false,
     };
     if (Platform.OS === 'ios') {
@@ -56,9 +70,6 @@ function ChooseAlbum({ navigation, route }: RootStackScreenProps<'ChooseAlbum'>)
   }, [navigation]);
 
   useEffect(() => {
-    log.debug('ChooseAlbum > route : ', route);
-    setAssetType('Photos');
-    setSelectedAlbum(initAlbumName);
     getAlbums();
   }, []);
 
@@ -78,12 +89,11 @@ function ChooseAlbum({ navigation, route }: RootStackScreenProps<'ChooseAlbum'>)
    */
   async function getAlbums() {
     try {
-      let retrievedAlbums: CameraRoll.Album[] = await CameraRoll.getAlbums({
-        assetType,
-      });
+      let retrievedAlbums: CameraRoll.Album[] = await CameraRoll.getAlbums({ assetType: assetType });
       log.debug('ChooseAlbum.getAlbums > retrievedAlbums : ', retrievedAlbums);
       retrievedAlbums = [{ title: 'All', count: -1 }].concat(retrievedAlbums);
       setAlbums(retrievedAlbums);
+      // 循环读取每个相册的缩略图
       getThumbnails(retrievedAlbums);
     } catch (e) {
       log.error('ChooseAlbum.getAlbums() > 获取相册发生错误 : ', e);
@@ -127,11 +137,12 @@ function ChooseAlbum({ navigation, route }: RootStackScreenProps<'ChooseAlbum'>)
    */
   function renderItem({ item, index }: { item: CameraRoll.Album, index: number }) {
     const { title, count } = item;
-    const selectedRowStyle = selectedAlbum === title ? {
+    const selectedRowStyle = (initAlbumName || defaultAlbum) === title ? {
       backgroundColor: '#3B3B3B',
     } : {};
     return <RectButton
       onPress={() => {
+        if ((initAlbumName || defaultAlbum) === title) return;
         onChoosed(title);
         navigation.goBack();
       }}

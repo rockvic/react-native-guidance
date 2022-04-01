@@ -5,10 +5,14 @@ import { CompositeScreenProps } from "@react-navigation/native";
 export type RootStackParamList = {
   Home: undefined;
   ChangeBg: undefined;
-  CameraRoll: undefined;
+  CameraRoll: {
+    initChoosedPhotos?: string[];
+    multiple?: boolean;
+    onChoosed: (photos: string[]) => void;
+  };
   ChooseAlbum: {
-    onChoosed: (album: string) => void;
     initAlbumName: string;
+    onChoosed: (album: string) => void;
   };
 
   Test: { from: string } | undefined;

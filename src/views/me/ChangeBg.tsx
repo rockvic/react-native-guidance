@@ -4,7 +4,7 @@
  * Author : Victor Huang
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -12,8 +12,11 @@ import {
   ImageBackground,
   useWindowDimensions,
   PixelRatio,
+  StatusBar,
+  Platform,
+  TouchableOpacity,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { TouchableNativeFeedback } from 'react-native-gesture-handler';
@@ -39,6 +42,15 @@ function ChangeBg() {
   const [index, setIndex] = useState<number>();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  useFocusEffect(
+    useCallback(() => {
+      StatusBar.setBarStyle('dark-content');
+      if (Platform.OS === 'android')
+        StatusBar.setBackgroundColor('white');
+      return () => {};
+    }, [])
+  )
 
   useEffect(() => {
     setIndex(bgIdx);
@@ -79,7 +91,7 @@ function ChangeBg() {
     // 图片按照 16:10 的宽高比计算图片的高度
     const bgHeight = bgWidth * 10 / 16;
     return bgs.map((source, idx) => {
-      return <TouchableNativeFeedback
+      return <TouchableOpacity
         key={`img_${idx}`}
         onPress={() => onBgImgPress(idx)}
       >
@@ -94,7 +106,7 @@ function ChangeBg() {
             </View>
           </View> : null}
         </ImageBackground>
-      </TouchableNativeFeedback>
+      </TouchableOpacity>
     });
   }
 
@@ -108,11 +120,17 @@ function ChangeBg() {
       <BottomButtonBar
         btns={[
           { title: t('base.confirm'), onPress: onConfirm },
-          { 
-            title: t('base.openCameraRoll'), 
+          {
+            title: t('base.openCameraRoll'),
             btnStyle: { flex: 1.5 },
             btnTextStyle: { color: Global.colors.PRIMARY_TEXT },
-            onPress: () => { navigation.navigate('CameraRoll') }, 
+            onPress: () => {
+              navigation.navigate('CameraRoll', {
+                multiple: false,
+                initChoosedPhotos: [],
+                onChoosed: () => {},
+              });
+            },
           },
           { title: t('base.cancel'), onPress: onCancel, btnTextStyle: { color: Global.colors.PRIMARY_TEXT } },
         ]}
