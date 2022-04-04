@@ -30,6 +30,7 @@
     "react-native-elements": "^3.4.2",
     "react-native-fs": "^2.19.0",
     "react-native-gesture-handler": "2.1.1",
+    "react-native-linear-gradient": "^2.5.6",
     "react-native-local-resource": "^0.1.6",
     "react-native-localize": "^2.2.0",
     "react-native-logs": "^4.0.1",

@@ -23,6 +23,8 @@ export type btn = {
   btnStyle?: ViewStyle | ViewStyle[];
   // 按钮文字样式
   btnTextStyle?: TextStyle | TextStyle[];
+  // 按钮禁用状态
+  disabled?: boolean | undefined;
 };
 
 export type Props = {
@@ -48,19 +50,23 @@ const BottomButtonBar: React.FC<Props> = ({btns, style, children, absolutely}) =
       style && style,
     ] as ViewStyle}
   >
-    {btns.map(({title, onPress, btnStyle, btnTextStyle}, idx) => {
+    {btns.map(({title, onPress, btnStyle, btnTextStyle, disabled=false}, idx) => {
       // 按钮样式
       let btnStyles = [styles.bottomBtn, btnStyle && btnStyle] as ViewStyle;
 
       // 按钮文字样式
       let btnTextStyles = [
         styles.bottomBtnText, 
-        { color: Global.colors.PRIMARY },
+        { color: true === disabled ? Global.colors.SECONDARY_TEXT : Global.colors.PRIMARY },
         { marginBottom: insets.bottom },
         btnTextStyle && btnTextStyle,
       ] as TextStyle;
       
-      return <BorderlessButton key={`b_btn_${idx}`} style={btnStyles} onPress={onPress}>
+      return <BorderlessButton
+        key={`b_btn_${idx}`}
+        style={btnStyles}
+        onPress={false === disabled ? onPress : () => {}}
+      >
         <Text style={btnTextStyles}>
           {title}
         </Text>

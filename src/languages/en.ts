@@ -11,6 +11,18 @@ export default {
     cancel: 'Cancel',
     openCameraRoll: 'Open Camera Roll',
     openSystemSettings: 'Open System Settings{{extInfo}}',
+    fromCameraRoll: 'From Camera Roll',
+    openCamera: 'Open Camera',
+    takePicture: 'Take Picture',
+    takeVideo: 'Take Video',
+    discardChangesAlert: {
+      title: 'Discard changes?',
+      message: 'You have unsaved changes. Are you sure to discard them and leave the screen?',
+      cancelBtnText: 'Don\'t leave',
+      discardBtnText: 'Discard',
+    },
+    choosedItems_one: 'Choosed {{count}} item',
+    choosedItems_other: 'Choosed {{count}} items',
   },
   navigation: {
     backText: 'Back',

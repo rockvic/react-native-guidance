@@ -4,7 +4,7 @@
  * Author : Victor Huang
  */
 
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   Platform,
   StyleSheet,
@@ -20,7 +20,7 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { RectButton } from 'react-native-gesture-handler';
-import CameraRoll from "@react-native-community/cameraroll";
+import CameraRoll from '@react-native-community/cameraroll';
 
 import type { StackNavigationOptions } from '@react-navigation/stack';
 import type { HeaderBackButtonProps } from '@react-navigation/elements';
@@ -31,12 +31,12 @@ import log from '../../utils/Logger';
 import Icon from '../../components/EasyIcon';
 import ViewUtil from '../../utils/ViewUtil';
 import BottomButtonBar from '../../components/BottomButtonBar';
-import { useFocusEffect } from '@react-navigation/native';
+import PinchableImage from '../../components/PinchableImage';
 
 // 默认相册 - All，显示所有照片
-const defaultAlbum = "All";
+const defaultAlbum = 'All';
 // 默认查询的类型 - All，显示所有照片及视频
-const defaultAssetType = "All";
+const defaultAssetType = 'All';
 
 // 每次读取的照片张数
 const photosPerPage = 200;
@@ -47,7 +47,7 @@ const photoGap = 2;
 
 function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>) {
   const { t } = useTranslation();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   // props passed by route.params
   const initChoosedPhotos = route?.params?.initChoosedPhotos || [];
   const multiple = route?.params?.multiple || false;
@@ -66,15 +66,6 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
   // 控制无限加载
   const [infiniteLoading, setInfiniteLoading] = useState<boolean>(false);
 
-  useFocusEffect(
-    useCallback(() => {
-      StatusBar.setBarStyle('light-content');
-      if (Platform.OS === 'android')
-        StatusBar.setBackgroundColor('#1A1A1A');
-      return () => {};
-    }, [])
-  )
-
   useLayoutEffect(() => {
     // 设置定制化的 Header
     const options: Partial<StackNavigationOptions> = {
@@ -82,9 +73,6 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
       headerStyle: {
         backgroundColor: '#1A1A1A',
       },
-      /* headerTitleStyle: {
-        color: Global.colors.BORDER_EXTRALIGHT,
-      }, */
       headerShadowVisible: false,
     };
     if (Platform.OS === 'ios') {
@@ -212,10 +200,13 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
    * 渲染预览区域
    */
   function renderPreviewView() {
-    return <View style={styles.previewView}>
-      {previewPhoto ? <Image
-        style={styles.previewImg}
-        source={{ uri:  previewPhoto }}
+    const previewViewHeight = height * 0.3;
+    return <View style={[styles.previewView, { height: previewViewHeight }]}>
+      {previewPhoto ? <PinchableImage
+        uri={previewPhoto}
+        width={width}
+        height={previewViewHeight}
+        style={{ resizeMode: 'cover' }}
       /> : null}
     </View>;
   }
@@ -244,7 +235,7 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
         </Text>
         <Icon name='chevron-down-sharp' size={20} color={Global.colors.BORDER_EXTRALIGHT} />
       </RectButton>
-      <Text style={styles.selectedCount}>已选中 {selectedPhotos.length} 项</Text>
+      <Text style={styles.selectedCount}>{t('base.choosedItems', { count: selectedPhotos.length })}</Text>
     </View>;
   }
 
@@ -318,6 +309,7 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
    * 确定点击事件
    */
   function onConfirm() {
+    onChoosed(selectedPhotos);
     navigation.goBack();
   }
 
@@ -335,12 +327,13 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
 
   return (
     <View style={styles.root}>
+      <StatusBar barStyle='light-content' backgroundColor='#1A1A1A' />
       {renderPreviewView()}
       {renderToolBar()}
       {renderPhotos()}
       <BottomButtonBar
         btns={[
-          { title: t('base.confirm'), onPress: onConfirm },
+          { title: t('base.confirm'), onPress: onConfirm, disabled: selectedPhotos.length === 0 },
           { title: t('base.cancel'), onPress: onCancel, btnTextStyle: { color: Global.colors.SECONDARY_TEXT } },
         ]}
         style={styles.bottomBar}
@@ -380,7 +373,8 @@ const styles = StyleSheet.create({
   },
   // 预览区域
   previewView: {
-    height: '30%',
+    overflow: 'hidden',
+    // backgroundColor: 'red',
   },
   previewImg: {
     width: '100%',

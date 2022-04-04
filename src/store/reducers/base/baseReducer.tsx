@@ -3,11 +3,15 @@ import { setConfigLS } from '../../../utils/Storage';
 
 export type BaseStateType = {
   config: {
-    language?: string;
+    language?: string | undefined;
     // 1 - 内置背景图
     // 2 - 相册
-    bgType: number;
+    bgType: 1 | 2;
     bgIdx: number;
+    // 从相册里选择背景图时，选中图片的 uri
+    bgPhoto?: string | undefined;
+    // 相册中最近使用过的 9 张背景图
+    bgPhotos?: string[] | undefined;
   },
   barHeights: {
     statusBarHeight: number | undefined;
@@ -19,8 +23,10 @@ export type BaseStateType = {
 export const initialState = {
   config: {
     language: undefined,
-    bgType: 1,
+    bgType: 1 as (1 | 2),
     bgIdx: 0,
+    bgPhoto: undefined,
+    bgPhotos: [],
   },
   barHeights: {
     statusBarHeight: undefined,

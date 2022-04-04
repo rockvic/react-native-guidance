@@ -4,7 +4,7 @@
  * Author : Victor Huang
  */
 
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { StyleSheet, View, Text, Platform, FlatList, Image, StatusBar } from 'react-native';
 
 import { useTranslation } from 'react-i18next';
@@ -19,12 +19,11 @@ import type { RootStackScreenProps } from '../../navigator/types';
 import Global from '../../Global';
 import log from '../../utils/Logger';
 import Icon from '../../components/EasyIcon';
-import { useFocusEffect } from '@react-navigation/native';
 
 // 默认相册 - All，显示所有照片
-const defaultAlbum = "All";
+const defaultAlbum = 'All';
 // 默认查询的类型 - All，显示所有照片及视频
-const defaultAssetType = "Photos";
+const defaultAssetType = 'Photos';
 // 每次读取的照片张数
 const pageSize = 50;
 
@@ -46,7 +45,7 @@ function ChooseAlbum({ navigation, route }: RootStackScreenProps<'ChooseAlbum'>)
       return () => {
         StatusBar.setBarStyle('dark-content');
         if (Platform.OS === 'android')
-          StatusBar.setBackgroundColor('white');
+          StatusBar.setBackgroundColor('transparent');
       };
     }, [])
   ) */
@@ -172,10 +171,17 @@ function ChooseAlbum({ navigation, route }: RootStackScreenProps<'ChooseAlbum'>)
     />;
   }
 
-  return renderAlbums();
+  return <View style={styles.root}>
+    <StatusBar barStyle='light-content' backgroundColor='#1A1A1A' />
+    {renderAlbums()}
+  </View>;
 };
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: '#262626',
+  },
   backBtn: {
     flex: 1,
     width: 80,

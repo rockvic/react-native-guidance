@@ -11,6 +11,18 @@ export default {
     cancel: '取消',
     openCameraRoll: '从相册选取',
     openSystemSettings: '打开设置界面{{extInfo}}',
+    fromCameraRoll: '来自相册',
+    openCamera: '打开相机',
+    takePicture: '拍照',
+    takeVideo: '录制视频',
+    discardChangesAlert: {
+      title: '丢弃更改内容？',
+      message: '此界面中的部分数据已经更改，您确认不保存数据直接退出吗？',
+      cancelBtnText: '暂不退出',
+      discardBtnText: '丢弃并退出',
+    },
+    choosedItems_one: '已选中 {{count}} 项',
+    choosedItems_other: '已选中 {{count}} 项',
   },
   navigation: {
     backText: '返回',

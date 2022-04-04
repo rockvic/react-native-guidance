@@ -15,8 +15,11 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
+import LinearGradient from 'react-native-linear-gradient';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { HomeTabScreenProps } from '../../navigator/types';
 import type { StateType } from '../../store/reducers';
@@ -25,33 +28,18 @@ import Global from '../../Global';
 import log from '../../utils/Logger';
 import Icon from '../../components/EasyIcon';
 import bgs from '../../assets/images/bg';
-import { useFocusEffect } from '@react-navigation/native';
+import { FocusAwareStatusBar } from '../../navigator/HomeTabNavigator';
 
 const avatarSize = 90;
 const avatarOffset = avatarSize * 0.618; // 50;
 
-function Tutorial({ navigation }: HomeTabScreenProps<'MeTab'>) {
-  const { bgType, bgIdx } = useSelector((state: StateType) => state.base.config);
+function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
+  const { bgType, bgIdx, bgPhoto } = useSelector((state: StateType) => state.base.config);
+  const insets = useSafeAreaInsets();
   const bottomTabBarHeight = useBottomTabBarHeight();
   const bgWidth = useWindowDimensions().width;
   const bgHeight = bgWidth * 10 / 16;
   const [scrollY] = useState(new Animated.Value(0));
-
-  useFocusEffect(
-    useCallback(() => {
-      StatusBar.setBarStyle('light-content');
-      if (Platform.OS === 'android') {
-        StatusBar.setBackgroundColor('rgba(0, 0, 0, .2)');
-      }
-      return () => {
-        // 将 StatusBar 还原为全局的深色
-        StatusBar.setBarStyle('dark-content');
-        if (Platform.OS === 'android') {
-          StatusBar.setBackgroundColor('white');
-        }
-      };
-    }, [])
-  )
 
   /**
    * 变更背景图
@@ -72,21 +60,35 @@ function Tutorial({ navigation }: HomeTabScreenProps<'MeTab'>) {
       style={[styles.bg, {
         width: bgWidth,
         height: bgHeight,
-        // top: Platform.OS === 'android' ? -(statusBarHeight! | 40)! : 0,
-        transform: [{
-          translateY: scrollY.interpolate({
-            inputRange: [-bgHeight, 0, bgHeight],
-            outputRange: [bgHeight / 2, 0, -bgHeight]
-          })
-        }, {
-          scale: scrollY.interpolate({
-            inputRange: [-bgHeight, 0, bgHeight],
-            outputRange: [2, 1, 1]
-          })
-        }]
+        transform: [
+          {
+            translateY: scrollY.interpolate({
+              inputRange: [-bgHeight, 0, bgHeight],
+              outputRange: [bgHeight / 2, 0, -bgHeight]
+            })
+          },
+          {
+            scale: scrollY.interpolate({
+              inputRange: [-bgHeight, 0, bgHeight],
+              outputRange: [2, 1, 1]
+            })
+          }
+        ]
       }]}
-      source={bgs[bgIdx]}
+      source={bgType === 1 ? bgs[bgIdx] : { uri: bgPhoto }}
     />;
+  }
+
+  /**
+   * 渲染最顶端的半透明渐变遮罩
+   * @returns 
+   */
+  function renderTopMask() {
+    const h = Platform.OS === 'ios' ? insets.top + 50 : 50;
+    return <LinearGradient
+      colors={[Global.colors.DARK, `${Global.colors.DARK}11`, '#FFFFFF00']}
+      style={[styles.topMask, { width: bgWidth, height: h }]}
+    />
   }
 
   /**
@@ -105,10 +107,12 @@ function Tutorial({ navigation }: HomeTabScreenProps<'MeTab'>) {
       </View>
     </View>;
   }
-
+  
   return (
     <View style={[styles.root, { /* marginBottom: bottomTabBarHeight */ }]}>
+      <FocusAwareStatusBar barStyle='light-content' backgroundColor={Global.colors.DARK} />
       {renderBg()}
+      {renderTopMask()}
       <Animated.ScrollView style={[styles.rootSv]}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -134,15 +138,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     flexDirection: 'column',
+    // backgroundColor: 'black',
   },
   bg: {
     position: 'absolute',
+    top: 0,
+    left: 0,
     resizeMode: 'cover',
+    backgroundColor: Global.colors.BORDER_LIGHT,
+  },
+  topMask: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
   bgPressMask: {
     backgroundColor: 'transparent',
   },
   rootSv: {
+    // backgroundColor: 'green',
   },
   container: {
     flex: 1,
@@ -187,4 +201,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Tutorial;
+export default Me;

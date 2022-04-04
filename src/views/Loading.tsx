@@ -5,7 +5,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, StatusBar } from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import log from '../utils/Logger';
@@ -20,8 +20,10 @@ type Props = {
 
 const Loading: React.FC<Props> = ({ onLoaded }) => {
   const dispatch = useDispatch();
+  const statusBarHeight = StatusBar.currentHeight;
 
   useEffect(() => {
+    console.log('statusBarHeight in loading:', statusBarHeight);
     init();
   }, []);
 

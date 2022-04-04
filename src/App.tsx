@@ -23,6 +23,7 @@ LogBox.ignoreLogs([
   'Did not receive response to shouldStartLoad in time',
   'i18next: init: i18next is already initialized',
   'Non-serializable values were found in the navigation state',
+  'Task orphaned for request',
 ]);
 
 type Props = {};

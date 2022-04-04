@@ -5,7 +5,7 @@
  */
 
 import * as React from 'react';
-import { StyleSheet, Image } from 'react-native';
+import { StyleSheet, Image, StatusBar, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from '@react-native-community/blur';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +18,13 @@ import Tutorial from '../views/tutorial/Tutorial';
 import Search from '../views/tutorial/Search';
 import Me from '../views/me/Me';
 import Global from '../Global';
+import { useIsFocused } from '@react-navigation/native';
+
+// status bar component aware of screen focus
+export function FocusAwareStatusBar(props: any) {
+  const isFocused = useIsFocused();
+  return isFocused ? <StatusBar {...props} /> : null;
+}
 
 const Tab = createBottomTabNavigator<HomeTabParamList>();
 
@@ -30,15 +37,17 @@ function HomeTabNavigator() {
         tabBarStyle: { position: 'absolute' },
         tabBarActiveTintColor: Global.colors.PRIMARY_TEXT,
         tabBarInactiveTintColor: Global.colors.SECONDARY_TEXT,
-        tabBarBackground: () => (
-          <BlurView
-            style={StyleSheet.absoluteFill}
-            blurType='light'
-            blurAmount={20}
-            blurRadius={25}
-            overlayColor='transparent'
-          />
-        ),
+        tabBarBackground: () => {
+          if (Platform.OS === 'ios') return <BlurView
+              style={StyleSheet.absoluteFill}
+              blurType='light'
+              blurAmount={20}
+              blurRadius={25}
+              overlayColor='transparent'
+            />
+          else
+            return null;
+        },
       }}
     >
       <Tab.Screen

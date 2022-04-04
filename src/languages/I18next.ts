@@ -33,23 +33,22 @@ const initI18next = (language: string | null) => {
       lng: lang,
       interpolation: {
         escapeValue: false,
-        /* format: function (value, format, lng) {
-          if (format === 'uppercase') {
-            return value.toUpperCase();
-          }
-          if (format === 'lowercase') {
-            return value.toLowerCase();
-          }
-          console.log(value instanceof Date, format);
-          if (value instanceof Date) {
-            return moment(value).format(format || 'YYYY/MM/DD hh:mm:ss');
-          }
-          return value;
-        }, */
       },
       // debug 模式，此处设置开发模式下打开 debug 模式
       debug: __DEV__,
+    }, (err, t) => {
+      // initialized and ready to go!
+      i18next?.services?.formatter?.add('lowercase', (value, lng, options) => {
+        return value.toLowerCase();
+      });
+      i18next?.services?.formatter?.add('uppercase', (value, lng, options) => {
+        return value.toUpperCase();
+      });
+      i18next?.services?.formatter?.add('underscore', (value, lng, options) => {
+        return value.replace(/\s+/g, '_');
+      });
     });
+
   return lang;
 };
 

@@ -32,6 +32,10 @@ class Global extends Object {
     // 背景
     BACKGROUND:         'rgba(242, 242, 242, 1)', // 背景色
 
+    DARK:               '#1A1A1A',
+    DARK_BG:            '#262626',
+    DARK_LIGHT:         '#3B3B3B',
+
     /* FONT: 'rgba(0,0,0,1)', // '#000000', 工作区主字体颜色：（黑）
     FONT_GRAY: 'rgba(93,93,93,1)', // '#5D5D5D', 工作区主字体颜色：（深）
     FONT_LIGHT_GRAY: 'rgba(130,130,130,1)', // '#828282', 工作区主字体颜色：（浅）

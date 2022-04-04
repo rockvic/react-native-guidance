@@ -1,0 +1,1 @@
+xcrun xctrace list devices
