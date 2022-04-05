@@ -9,6 +9,11 @@ export default {
   base: {
     confirm: 'OK',
     cancel: 'Cancel',
+    signUp: 'Sign Up',
+    signIn: 'Sign In',
+    signOut: 'Sign Out',
+    submit: 'Submit',
+    reset: 'Reset',
     openCameraRoll: 'Open Camera Roll',
     openSystemSettings: 'Open System Settings{{extInfo}}',
     fromCameraRoll: 'From Camera Roll',
@@ -23,6 +28,10 @@ export default {
     },
     choosedItems_one: 'Choosed {{count}} item',
     choosedItems_other: 'Choosed {{count}} items',
+    email: 'EMail',
+    emailInputPlaceholder: 'Please input your email',
+    password: 'Password',
+    passwordInputPlaceholder: 'Please input your password',
   },
   navigation: {
     backText: 'Back',
@@ -56,5 +65,24 @@ export default {
   },
   chooseAlbum: {
     title: 'Choose Album',
+  },
+  signIn: {
+    title: 'Sign In',
+    forgetPassword: 'Forget password? ',
+    noAccount: 'Don\'t have a RNG account yet? ',
+    toSignUp: 'Sign Up',
+    valiInfo: {
+      invalidEmail: 'That doesn\'t look like an email address.',
+      pwdLessThan6: 'Your password needs 6+ characters.',
+    },
+  },
+  signUp: {
+    title: 'Sign Up',
+  },
+  changePassword: {
+    title: 'Change Password',
+  },
+  resetPassword: {
+    title: 'Reset Password',
   },
 };

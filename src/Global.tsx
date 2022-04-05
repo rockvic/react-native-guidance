@@ -13,11 +13,16 @@ class Global extends Object {
     /** 规范配色 */
     // 主色
     PRIMARY:            '#409EFF',
+    PRIMARY_GRADIENT:   '#68AAFA',
     // 辅助色
     SUCCESS:            '#67C23A',
+    SUCCESS_GRADIENT:   '#DAF2CF',
     WARNING:            '#E6A23C',
+    WARNING_GRADIENT:   '#F9E7CF',
     DANGER:             '#F56C6C',
+    DANGER_GRADIENT:    '#FCDBDB',
     INFO:               '#909399',
+    INFO_GRADIENT:      '#E4E3E6',
     // 中性色
     // 文字
     PRIMARY_TEXT:       '#303133',

@@ -15,11 +15,11 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { RectButton } from 'react-native-gesture-handler';
 
 import type { HomeTabScreenProps } from '../../navigator/types';
 import type { StateType } from '../../store/reducers';
@@ -29,8 +29,9 @@ import log from '../../utils/Logger';
 import Icon from '../../components/EasyIcon';
 import bgs from '../../assets/images/bg';
 import { FocusAwareStatusBar } from '../../navigator/HomeTabNavigator';
+import px from '../../utils/px';
 
-const avatarSize = 90;
+const avatarSize = px(160);
 const avatarOffset = avatarSize * 0.618; // 50;
 
 function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
@@ -84,10 +85,15 @@ function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
    * @returns 
    */
   function renderTopMask() {
-    const h = Platform.OS === 'ios' ? insets.top + 50 : 50;
+    const maskHeight = Platform.OS === 'ios' ? insets.top + 30 : 50;
+    // const locations = Platform.OS === 'ios' ? [0, 1] : [0, 1];
+    const colors = Platform.OS === 'ios' ?
+      [Global.colors.DARK, 'transparent'] :
+      [Global.colors.DARK, `${Global.colors.DARK}00`];
     return <LinearGradient
-      colors={[Global.colors.DARK, `${Global.colors.DARK}11`, '#FFFFFF00']}
-      style={[styles.topMask, { width: bgWidth, height: h }]}
+      colors={colors}
+      // locations={locations}
+      style={[styles.topMask, { width: bgWidth, height: maskHeight }]}
     />
   }
 
@@ -97,14 +103,14 @@ function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
   function renderAvatar() {
     // TODO: 如果用户上传了头像，则使用用户自定义头像
     return <View style={[styles.avatarFrame, { top: -avatarOffset }]}>
-      <View style={styles.avatarMask}>
+      <RectButton style={styles.avatarMask} onPress={() => navigation.navigate('SignIn')}>
         <View style={styles.avatarContainer}>
-          <Icon iconLib='fa5' name='robot' size={avatarSize / 2.5}
+          <Icon iconLib='fa5' name='robot' width={avatarSize} height={avatarSize} size={avatarSize / 2.5}
             color={Global.colors.SECONDARY_TEXT}
             style={{ paddingBottom: 8 }} solid
           />
         </View>
-      </View>
+      </RectButton>
     </View>;
   }
   
@@ -153,7 +159,7 @@ const styles = StyleSheet.create({
     left: 0,
   },
   bgPressMask: {
-    backgroundColor: 'transparent',
+    backgroundColor: `${Global.colors.DARK}22`,
   },
   rootSv: {
     // backgroundColor: 'green',
@@ -161,8 +167,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Global.colors.BACKGROUND,
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: px(20),
+    borderTopRightRadius: px(20),
   },
   // 头像
   avatarFrame: {
@@ -195,9 +201,9 @@ const styles = StyleSheet.create({
   userName: {
     maxWidth: '60%', // 最大宽度 60%，超过宽度自动显示省略号，结合 numberOfLines={1}
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: px(32),
     fontWeight: '800',
-    lineHeight: 40,
+    lineHeight: px(40),
   },
 });
 

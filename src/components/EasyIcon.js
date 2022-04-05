@@ -79,7 +79,7 @@ class EasyIcon extends Component {
 
     style = Array.isArray(style) ? style : [style];
 
-    let _styles = [width, height, bg, borderWidth, borderColor, radius]
+    let _styles = [{width, height, borderWidth, borderColor, radius}, bg]
       .concat([{ alignItems: 'center', justifyContent: 'center' }])
       .concat(style);
 
@@ -88,7 +88,7 @@ class EasyIcon extends Component {
       : this.iconLibAlias[iconLib]
         ? this.iconLibAlias[iconLib]
         : null;
-
+    
     if (Icon) {
       return (
         <View style={_styles}>

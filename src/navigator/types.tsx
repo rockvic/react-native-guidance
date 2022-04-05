@@ -14,6 +14,14 @@ export type RootStackParamList = {
     initAlbumName: string;
     onChoosed: (album: string) => void;
   };
+  SignIn: undefined;
+  SignUp: {
+    account: string;
+  };
+  ResetPassword: {
+    account: string;
+  };
+  ChangePassword: undefined;
 
   Test: { from: string } | undefined;
   Test1: { from: string } | undefined;

@@ -9,6 +9,7 @@ import { StyleSheet, Image, StatusBar, Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from '@react-native-community/blur';
 import { useTranslation } from 'react-i18next';
+import { useIsFocused } from '@react-navigation/native';
 
 import { HomeTabParamList } from './types';
 import Icon from '../components/EasyIcon';
@@ -18,7 +19,6 @@ import Tutorial from '../views/tutorial/Tutorial';
 import Search from '../views/tutorial/Search';
 import Me from '../views/me/Me';
 import Global from '../Global';
-import { useIsFocused } from '@react-navigation/native';
 
 // status bar component aware of screen focus
 export function FocusAwareStatusBar(props: any) {

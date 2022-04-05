@@ -9,6 +9,11 @@ export default {
   base: {
     confirm: '确定',
     cancel: '取消',
+    signUp: '注册',
+    signIn: '登录',
+    signOut: '退出',
+    submit: '提交',
+    reset: '清除',
     openCameraRoll: '从相册选取',
     openSystemSettings: '打开设置界面{{extInfo}}',
     fromCameraRoll: '来自相册',
@@ -23,6 +28,10 @@ export default {
     },
     choosedItems_one: '已选中 {{count}} 项',
     choosedItems_other: '已选中 {{count}} 项',
+    email: '电子邮箱',
+    emailInputPlaceholder: '请输入您的电子邮箱',
+    password: '密码',
+    passwordInputPlaceholder: '请输入您的密码',
   },
   navigation: {
     backText: '返回',
@@ -56,5 +65,24 @@ export default {
   },
   chooseAlbum: {
     title: '选择相册',
+  },
+  signIn: {
+    title: '登录',
+    forgetPassword: '忘记密码？',
+    noAccount: '没有 RNG 账户？',
+    toSignUp: '注册一个',
+    valiInfo: {
+      invalidEmail: '这看起来不是一个合规的电子邮箱地址',
+      pwdLessThan6: '密码长度不能小于 6 位',
+    },
+  },
+  signUp: {
+    title: '注册新账户',
+  },
+  changePassword: {
+    title: '修改密码',
+  },
+  resetPassword: {
+    title: '重置密码',
   },
 };
