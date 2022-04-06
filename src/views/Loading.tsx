@@ -10,9 +10,10 @@ import { useDispatch } from 'react-redux';
 
 import log from '../utils/Logger';
 import initI18next from '../languages/I18next';
-import { getConfigLS, logAllStorage } from '../utils/Storage';
+import { getAuthLS, getConfigLS, getUsersLS, logAllStorage } from '../utils/Storage';
 import { setConfig } from '../store/actions/base/baseAction';
 import { initialState as baseInitialState } from '../store/reducers/base/baseReducer';
+import { setUsers, signIn } from '../store/actions/base/authAction';
 
 type Props = {
   onLoaded: () => void;
@@ -42,6 +43,15 @@ const Loading: React.FC<Props> = ({ onLoaded }) => {
       config.language = initLang;
       // 将配置文件放入 redux
       dispatch(setConfig(config));
+
+      // 从本地存储恢复注册用户列表到 redux 中
+      const users = await getUsersLS();
+      dispatch(setUsers(users || []));
+
+      // 从本地存储恢复当前登录用户到 redux 中（保持登录）
+      const auth = await getAuthLS();
+      if (auth)
+        dispatch(signIn(auth.token, auth.currUser));
 
       // 回调父界面初始化完成
       onLoaded();

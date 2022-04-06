@@ -79,8 +79,8 @@ class EasyIcon extends Component {
 
     style = Array.isArray(style) ? style : [style];
 
-    let _styles = [{width, height, borderWidth, borderColor, radius}, bg]
-      .concat([{ alignItems: 'center', justifyContent: 'center' }])
+    let _styles = [{borderWidth, borderColor, radius, width, height}, bg]
+      .concat([{ alignItems: 'center', justifyContent: 'center', overflow: 'visible' }])
       .concat(style);
 
     let Icon = this.iconLib[iconLib]
@@ -96,7 +96,7 @@ class EasyIcon extends Component {
             name={this.props.name}
             color={this.props.color}
             size={this.props.size}
-            style={{ textAlign: 'center' }}
+            style={{ textAlign: 'center', lineHeight: this.props.size }}
             {...other}
           />
         </View>

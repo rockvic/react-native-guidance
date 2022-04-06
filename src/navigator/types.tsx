@@ -5,6 +5,7 @@ import { CompositeScreenProps } from "@react-navigation/native";
 export type RootStackParamList = {
   Home: undefined;
   ChangeBg: undefined;
+  Profile: undefined;
   CameraRoll: {
     initChoosedPhotos?: string[];
     multiple?: boolean;

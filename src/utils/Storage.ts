@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import type { AuthStateType } from '../store/reducers/base/authReducer';
 import type { BaseStateType } from '../store/reducers/base/baseReducer';
 
 const Storage = () => { };
@@ -9,6 +10,8 @@ Storage.KEY = {
   CONFIG: 'CONFIG',
   // 当前登录信息
   AUTH: 'AUTH',
+  // 缓存的用户信息
+  USERS: 'USERS',
 };
 
 /**
@@ -148,6 +151,20 @@ export async function setAuthLS(user: object) {
 }
 export async function removeAuthLS() {
   removeItem(Storage.KEY.AUTH);
+}
+
+/**
+ * 本地存取注册的用户信息
+ * @returns
+ */
+export async function getUsersLS() {
+  return getJsonItem(Storage.KEY.USERS);
+}
+export async function setUsersLS(users: AuthStateType['users']) {
+  setItem(Storage.KEY.USERS, users);
+}
+export async function removeUsersLS() {
+  removeItem(Storage.KEY.USERS);
 }
 
 export default Storage;

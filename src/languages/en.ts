@@ -28,7 +28,7 @@ export default {
     },
     choosedItems_one: 'Choosed {{count}} item',
     choosedItems_other: 'Choosed {{count}} items',
-    email: 'EMail',
+    email: 'Email',
     emailInputPlaceholder: 'Please input your email',
     password: 'Password',
     passwordInputPlaceholder: 'Please input your password',
@@ -51,6 +51,12 @@ export default {
   },
   me: {
     title: 'Me',
+    dftAccountName: 'Must Not Be Named',
+  },
+  profile: {
+    title: 'Profile',
+    avatar: 'Avatar',
+    alias: 'Alias',
   },
   changeBg: {
     title: 'Choose Background',
@@ -78,6 +84,7 @@ export default {
   },
   signUp: {
     title: 'Sign Up',
+    tips: 'This is an example of a simulated registration. The data you fill in will be stored in the local storage with MD5 encryption, which will not cause leakage. Please use it with confidence.',
   },
   changePassword: {
     title: 'Change Password',

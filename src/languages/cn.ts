@@ -51,6 +51,12 @@ export default {
   },
   me: {
     title: '我的',
+    dftAccountName: 'Must Not Be Named',
+  },
+  profile: {
+    title: '个人资料',
+    avatar: '头像',
+    alias: '昵称',
   },
   changeBg: {
     title: '选择背景',
@@ -78,6 +84,7 @@ export default {
   },
   signUp: {
     title: '注册新账户',
+    tips: '这是一个模拟注册的例子，您填写的数据都会以 MD5 加密存放在本地存储中，不会造成泄露，请放心使用！',
   },
   changePassword: {
     title: '修改密码',

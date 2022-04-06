@@ -1,6 +1,7 @@
-import React, {FC} from 'react';
-import {LogBox} from 'react-native';
-import {Provider} from 'react-redux';
+import React, { FC } from 'react';
+import { LogBox } from 'react-native';
+import { Provider } from 'react-redux';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 import MainView from './views/Main';
 import store from './store';
@@ -31,7 +32,9 @@ type Props = {};
 const App: FC<Props> = () => {
   return (
     <Provider store={store}>
-      <MainView />
+      <RootSiblingParent>
+        <MainView />
+      </RootSiblingParent>
     </Provider>
   );
 };

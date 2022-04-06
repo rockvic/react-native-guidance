@@ -1,14 +1,25 @@
-import {AUTH} from '../../types';
+import { AUTH } from '../../types';
 import Global from '../../../Global';
+import { setAuthLS, setUsersLS } from '../../../utils/Storage';
 
-export type AuthStateType = {
-  isLoggedIn: boolean;
-  token?: string;
-  currUser: object;
+export type UserType = {
+  account: string;
+  accountMask: string;
+  password: string;
+  avatar?: string;
+  alias?: string;
 };
 
-const initialState = {
-  isLoggedIn: false,
+export type AuthStateType = {
+  users: UserType[] | [];
+  isSignedIn: boolean;
+  token?: string;
+  currUser: UserType | {};
+};
+
+const initialState: AuthStateType = {
+  users: [],
+  isSignedIn: false,
   token: undefined,
   currUser: {},
 };
@@ -20,15 +31,32 @@ type Action = {
 
 export default (state: AuthStateType = initialState, action: Action) => {
   switch (action.type) {
-    case AUTH.LOGIN:
-      Global.token = action.payload.token;
+    case AUTH.SIGN_UP:
+      const tmpUsers = state.users.concat([]);
+      tmpUsers.push(action.payload);
+      setUsersLS(tmpUsers);
       return {
         ...state,
-        isLoggedIn: true,
+        users: tmpUsers,
+      };
+    case AUTH.SET_USERS:
+      return {
+        ...state,
+        users: action.payload,
+      };
+    case AUTH.SIGN_IN:
+      Global.token = action.payload.token;
+      const currUser = {
+        isSignedIn: true,
         token: action.payload.token,
         currUser: action.payload.currUser,
       };
-    case AUTH.LOGOUT:
+      setAuthLS(currUser);
+      return {
+        ...state,
+        ...currUser
+      };
+    case AUTH.SIGN_OUT:
       Global.token = ''; // null;
       return {
         ...state,

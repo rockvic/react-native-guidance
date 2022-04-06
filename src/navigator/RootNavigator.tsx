@@ -22,6 +22,7 @@ import SignIn from '../views/me/SignIn';
 
 import Test from '../views/examples/Test';
 import Test1 from '../views/examples/Test1';
+import Profile from '../views/me/Profile';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -40,6 +41,7 @@ function RootNavigator() {
       >
         <Stack.Screen name='Home' component={HomeTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name='ChangeBg' component={ChangeBg} options={{ title: t('changeBg.title') }} />
+        <Stack.Screen name='Profile' component={Profile} options={{ title: t('profile.title') }} />
 
         <Stack.Group screenOptions={{ presentation: 'modal' }}>
           <Stack.Screen name='CameraRoll' component={CameraRoll} options={{ title: t('cameraRoll.title') }} />

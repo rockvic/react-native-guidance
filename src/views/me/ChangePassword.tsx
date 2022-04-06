@@ -20,7 +20,7 @@ function ChangePassword({ navigation, route }: RootStackScreenProps<'ChangePassw
 
 const styles = StyleSheet.create({
   root: {
-    backgroundColor: '#ffffff',
+    flex: 1,
   },
 });
 

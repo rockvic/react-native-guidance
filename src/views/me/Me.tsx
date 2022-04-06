@@ -13,16 +13,17 @@ import {
   Animated,
   useWindowDimensions,
   TouchableOpacity,
-  StatusBar,
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { RectButton } from 'react-native-gesture-handler';
+import { useTranslation } from 'react-i18next';
 
 import type { HomeTabScreenProps } from '../../navigator/types';
 import type { StateType } from '../../store/reducers';
+import type { UserType } from '../../store/reducers/base/authReducer';
 
 import Global from '../../Global';
 import log from '../../utils/Logger';
@@ -32,15 +33,20 @@ import { FocusAwareStatusBar } from '../../navigator/HomeTabNavigator';
 import px from '../../utils/px';
 
 const avatarSize = px(160);
-const avatarOffset = avatarSize * 0.618; // 50;
+const avatarOffset = avatarSize * (1 - 0.618);
 
 function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
   const { bgType, bgIdx, bgPhoto } = useSelector((state: StateType) => state.base.config);
+  const { isSignedIn, currUser } = useSelector((state: StateType) => state.auth);
+
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const bottomTabBarHeight = useBottomTabBarHeight();
+
+  const [scrollY] = useState(new Animated.Value(0));
+
   const bgWidth = useWindowDimensions().width;
   const bgHeight = bgWidth * 10 / 16;
-  const [scrollY] = useState(new Animated.Value(0));
 
   /**
    * 变更背景图
@@ -103,7 +109,10 @@ function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
   function renderAvatar() {
     // TODO: 如果用户上传了头像，则使用用户自定义头像
     return <View style={[styles.avatarFrame, { top: -avatarOffset }]}>
-      <RectButton style={styles.avatarMask} onPress={() => navigation.navigate('SignIn')}>
+      <RectButton 
+        style={styles.avatarMask} 
+        onPress={() => navigation.navigate(isSignedIn ? 'Profile' : 'SignIn')}
+      >
         <View style={styles.avatarContainer}>
           <Icon iconLib='fa5' name='robot' width={avatarSize} height={avatarSize} size={avatarSize / 2.5}
             color={Global.colors.SECONDARY_TEXT}
@@ -111,6 +120,14 @@ function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
           />
         </View>
       </RectButton>
+      <TouchableOpacity
+        style={[styles.userNameContainer, { marginTop: avatarOffset }]}
+        onPress={() => navigation.navigate(isSignedIn ? 'Profile' : 'SignIn')}
+      >
+        <Text style={styles.userName} numberOfLines={1}>
+          {isSignedIn ? (currUser as UserType).alias || (currUser as UserType).accountMask : t('me.dftAccountName')}
+        </Text>
+      </TouchableOpacity>
     </View>;
   }
   
@@ -129,10 +146,6 @@ function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
         <TouchableOpacity style={[styles.bgPressMask, { height: bgHeight - 10 }]} onPress={changeBg} />
         <View style={[styles.container, { paddingTop: avatarSize - avatarOffset }]}>
           {renderAvatar()}
-          {/* TODO: 如果用户设置了用户名并登录后，显示用户名 */}
-          <View style={styles.userNameContainer}>
-            <Text style={styles.userName} numberOfLines={1}>Must Not Be Named</Text>
-          </View>
         </View>
       </Animated.ScrollView>
     </View>
@@ -174,8 +187,8 @@ const styles = StyleSheet.create({
   avatarFrame: {
     position: 'absolute',
     width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    paddingLeft: px(50),
   },
   avatarMask: {
     width: avatarSize,
@@ -195,15 +208,16 @@ const styles = StyleSheet.create({
   },
   // 用户名
   userNameContainer: {
-    alignItems: 'center',
+    flex: 1,
     justifyContent: 'center',
   },
   userName: {
     maxWidth: '60%', // 最大宽度 60%，超过宽度自动显示省略号，结合 numberOfLines={1}
-    textAlign: 'center',
     fontSize: px(32),
-    fontWeight: '800',
+    fontWeight: '700',
+    color: Global.colors.PRIMARY_TEXT,
     lineHeight: px(40),
+    marginLeft: px(40),
   },
 });
 

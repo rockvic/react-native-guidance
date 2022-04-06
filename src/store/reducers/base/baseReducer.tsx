@@ -1,4 +1,4 @@
-import {BASE} from '../../types';
+import { BASE } from '../../types';
 import { setConfigLS } from '../../../utils/Storage';
 
 export type BaseStateType = {
