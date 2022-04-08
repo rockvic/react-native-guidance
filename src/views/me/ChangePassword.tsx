@@ -199,6 +199,7 @@ function ChangePassword({ navigation, route }: RootStackScreenProps<'ChangePassw
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    backgroundColor: 'white',
   },
   // 滚动区域
   rootScroll: {

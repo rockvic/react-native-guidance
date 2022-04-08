@@ -187,6 +187,7 @@ function ResetPassword({ navigation, route }: RootStackScreenProps<'ResetPasswor
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    backgroundColor: 'white',
   },
   // 滚动区域
   rootScroll: {

@@ -4,21 +4,24 @@
  * Author : Victor Huang
  */
 
-import * as React from 'react';
-import { StyleSheet, Image, StatusBar, Platform } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { StyleSheet, Image, StatusBar, Platform, BackHandler } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from '@react-native-community/blur';
 import { useTranslation } from 'react-i18next';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useNavigationState } from '@react-navigation/native';
 
-import { HomeTabParamList } from './types';
+import type { HomeTabParamList, RootStackScreenProps } from './types';
+
+import Global from '../Global';
 import Icon from '../components/EasyIcon';
 import Images from '../assets/Images';
+import log from '../utils/Logger';
 
 import Tutorial from '../views/tutorial/Tutorial';
 import Search from '../views/tutorial/Search';
 import Me from '../views/me/Me';
-import Global from '../Global';
+import Toast from 'react-native-root-toast';
 
 // status bar component aware of screen focus
 export function FocusAwareStatusBar(props: any) {
@@ -28,8 +31,39 @@ export function FocusAwareStatusBar(props: any) {
 
 const Tab = createBottomTabNavigator<HomeTabParamList>();
 
-function HomeTabNavigator() {
+function HomeTabNavigator({ navigation }: RootStackScreenProps<'Home'>) {
   const { t } = useTranslation();
+  const state = useNavigationState(state => state);
+  let lastBackPressed: number = Date.now();
+
+  useEffect(
+    useCallback(() => {
+      const onAndroidBackPress = () => {
+        // log.debug('HomeTabNavigator > onAndroidBackPress() > navigation state : ', state);
+        const tabIndex = state.routes[0].state ? state.routes[0].state.index : 0;
+        // log.debug('HomeTabNavigator > onAndroidBackPress() > tabIndex : ', tabIndex);
+        if (state.index < 1 && tabIndex! < 1) {
+          if (lastBackPressed && lastBackPressed + 2000 >= Date.now()) {
+            // 最近2秒内按过back键，可以退出应用。
+            return false;
+          }
+          lastBackPressed = Date.now();
+          Toast.show("再按一次后退将退出应用");
+          return true;
+        }
+        if (state.index >= 1 || tabIndex! >= 1) {
+          navigation.goBack();
+        }
+        return true;
+      };
+
+      BackHandler.addEventListener('hardwareBackPress', onAndroidBackPress);
+
+      return () =>
+        BackHandler.removeEventListener('hardwareBackPress', onAndroidBackPress);
+    }, [state])
+  );
+  
   return (
     <Tab.Navigator
       screenOptions={{
