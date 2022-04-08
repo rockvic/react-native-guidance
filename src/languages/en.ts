@@ -7,13 +7,16 @@
 
 export default {
   base: {
-    confirm: 'OK',
+    ok: 'Ok',
+    confirm: 'Done',
     cancel: 'Cancel',
     signUp: 'Sign Up',
     signIn: 'Sign In',
     signOut: 'Sign Out',
     submit: 'Submit',
     reset: 'Reset',
+    replace: 'Replace',
+    delete: 'Delete',
     openCameraRoll: 'Open Camera Roll',
     openSystemSettings: 'Open System Settings{{extInfo}}',
     fromCameraRoll: 'From Camera Roll',
@@ -29,9 +32,9 @@ export default {
     choosedItems_one: 'Choosed {{count}} item',
     choosedItems_other: 'Choosed {{count}} items',
     email: 'Email',
-    emailInputPlaceholder: 'Please input your email',
+    emailInputPlaceholder: 'Please enter your email',
     password: 'Password',
-    passwordInputPlaceholder: 'Please input your password',
+    passwordInputPlaceholder: 'Please enter your password',
   },
   navigation: {
     backText: 'Back',
@@ -57,6 +60,7 @@ export default {
     title: 'Profile',
     avatar: 'Avatar',
     alias: 'Alias',
+    setAlias: 'Set Alias',
   },
   changeBg: {
     title: 'Choose Background',
@@ -77,19 +81,39 @@ export default {
     forgetPassword: 'Forget password? ',
     noAccount: 'Don\'t have a RNG account yet? ',
     toSignUp: 'Sign Up',
+    success: 'Sign in successful!',
     valiInfo: {
       invalidEmail: 'That doesn\'t look like an email address.',
       pwdLessThan6: 'Your password needs 6+ characters.',
+      wrongAcc: 'The account you entered does not exist.',
+      wrongPwd: 'You entered a wrong password, please try again.',
     },
   },
   signUp: {
     title: 'Sign Up',
     tips: 'This is an example of a simulated registration. The data you fill in will be stored in the local storage with MD5 encryption, which will not cause leakage. Please use it with confidence.',
+    accList: 'Accounts',
+    success: 'Account created successfully! Signing in has been done automatically.',
+    valiInfo: {
+      existAccTitle: 'Duplicate account',
+      existAccMsg: 'The account you entered already exists, please enter another email address to register. If you have forgotten the password of an existing account, please reset the password.',
+      countErrTitle: 'Exceeded number of accounts',
+      countErrMsg: 'Only 10 accounts are allowed to be stored locally. Please select an existing account to replace, or delete the existing account.',
+    },
   },
   changePassword: {
     title: 'Change Password',
+    success: 'Password changed successfully, please remember your new password!',
+    valiInfo: {
+      samePwd: 'The new password cannot be the same as the old password',
+    },
   },
   resetPassword: {
     title: 'Reset Password',
+    tips: 'This is a functional without business logic, which can be rewritten according to your own business in actual work!',
+    alert: {
+      title: 'Reset complete',
+      message: 'The password has been reset to 111111, Please sign in now and change your password!',
+    },
   },
 };

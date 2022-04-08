@@ -1,6 +1,6 @@
 /**
- * Description :
- * Created on : 2022/1/1
+ * Description : 我的
+ * Created on : 2022/3/22
  * Author : Victor Huang
  */
 
@@ -13,6 +13,7 @@ import {
   Animated,
   useWindowDimensions,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useSelector } from 'react-redux';
@@ -48,6 +49,26 @@ function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
   const bgWidth = useWindowDimensions().width;
   const bgHeight = bgWidth * 10 / 16;
 
+  const animatedEvent = Animated.event(
+    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+    { useNativeDriver: true }
+  );
+
+  const transform = [
+    {
+      translateY: scrollY.interpolate({
+        inputRange: [-bgHeight, 0, bgHeight],
+        outputRange: [bgHeight / 2, 0, -bgHeight]
+      })
+    },
+    {
+      scale: scrollY.interpolate({
+        inputRange: [-bgHeight, 0, bgHeight],
+        outputRange: [2, 1, 1]
+      })
+    }
+  ];
+
   /**
    * 变更背景图
    */
@@ -64,24 +85,7 @@ function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
    */
   function renderBg() {
     return <Animated.Image
-      style={[styles.bg, {
-        width: bgWidth,
-        height: bgHeight,
-        transform: [
-          {
-            translateY: scrollY.interpolate({
-              inputRange: [-bgHeight, 0, bgHeight],
-              outputRange: [bgHeight / 2, 0, -bgHeight]
-            })
-          },
-          {
-            scale: scrollY.interpolate({
-              inputRange: [-bgHeight, 0, bgHeight],
-              outputRange: [2, 1, 1]
-            })
-          }
-        ]
-      }]}
+      style={[styles.bgPos, styles.bgImg, { width: bgWidth, height: bgHeight, transform}]}
       source={bgType === 1 ? bgs[bgIdx] : { uri: bgPhoto }}
     />;
   }
@@ -91,16 +95,15 @@ function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
    * @returns 
    */
   function renderTopMask() {
-    const maskHeight = Platform.OS === 'ios' ? insets.top + 30 : 50;
-    // const locations = Platform.OS === 'ios' ? [0, 1] : [0, 1];
-    const colors = Platform.OS === 'ios' ?
-      [Global.colors.DARK, 'transparent'] :
-      [Global.colors.DARK, `${Global.colors.DARK}00`];
-    return <LinearGradient
-      colors={colors}
-      // locations={locations}
-      style={[styles.topMask, { width: bgWidth, height: maskHeight }]}
-    />
+    const locations = Platform.OS === 'ios' ? [0, .2, 1] : [0, .4, 1];
+    const colors = [Global.colors.DARK, `${Global.colors.DARK}77`, `${Global.colors.DARK}00`];
+    return <Animated.View style={[styles.bgPos, { width: bgWidth, height: bgHeight, transform }]}>
+      <LinearGradient
+        colors={colors}
+        locations={locations}
+        style={[{ width: '100%', height: '100%' }]}
+      />
+    </Animated.View>;
   }
 
   /**
@@ -109,23 +112,25 @@ function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
   function renderAvatar() {
     // TODO: 如果用户上传了头像，则使用用户自定义头像
     return <View style={[styles.avatarFrame, { top: -avatarOffset }]}>
-      <RectButton 
-        style={styles.avatarMask} 
+      <RectButton style={styles.avatarMask} 
         onPress={() => navigation.navigate(isSignedIn ? 'Profile' : 'SignIn')}
       >
         <View style={styles.avatarContainer}>
-          <Icon iconLib='fa5' name='robot' width={avatarSize} height={avatarSize} size={avatarSize / 2.5}
-            color={Global.colors.SECONDARY_TEXT}
-            style={{ paddingBottom: 8 }} solid
-          />
+          {(currUser as UserType).avatar ?
+            <Image source={{ uri: (currUser as UserType).avatar }} style={styles.avatar} /> :
+            <Icon iconLib='fa5' name='robot' width={avatarSize} height={avatarSize} size={avatarSize / 2.5}
+              color={Global.colors.SECONDARY_TEXT}
+              style={{ paddingBottom: 8 }} solid
+            />
+          }
         </View>
       </RectButton>
       <TouchableOpacity
-        style={[styles.userNameContainer, { marginTop: avatarOffset }]}
+        style={[styles.accountContainer, { marginTop: avatarOffset }]}
         onPress={() => navigation.navigate(isSignedIn ? 'Profile' : 'SignIn')}
       >
-        <Text style={styles.userName} numberOfLines={1}>
-          {isSignedIn ? (currUser as UserType).alias || (currUser as UserType).accountMask : t('me.dftAccountName')}
+        <Text style={styles.account} numberOfLines={1}>
+          {isSignedIn ? (currUser as UserType)?.alias || (currUser as UserType)?.accountMask : t('me.dftAccountName')}
         </Text>
       </TouchableOpacity>
     </View>;
@@ -136,14 +141,8 @@ function Me({ navigation }: HomeTabScreenProps<'MeTab'>) {
       <FocusAwareStatusBar barStyle='light-content' backgroundColor={Global.colors.DARK} />
       {renderBg()}
       {renderTopMask()}
-      <Animated.ScrollView style={[styles.rootSv]}
-        onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-          { useNativeDriver: true }
-        )}
-        scrollEventThrottle={16}
-      >
-        <TouchableOpacity style={[styles.bgPressMask, { height: bgHeight - 10 }]} onPress={changeBg} />
+      <Animated.ScrollView style={[styles.rootSv]} onScroll={animatedEvent} scrollEventThrottle={16}>
+        <TouchableOpacity style={{ height: bgHeight - 10 }} onPress={changeBg} />
         <View style={[styles.container, { paddingTop: avatarSize - avatarOffset }]}>
           {renderAvatar()}
         </View>
@@ -157,25 +156,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     flexDirection: 'column',
-    // backgroundColor: 'black',
   },
-  bg: {
+  bgPos: {
     position: 'absolute',
     top: 0,
     left: 0,
+  },
+  bgImg: {
     resizeMode: 'cover',
     backgroundColor: Global.colors.BORDER_LIGHT,
   },
-  topMask: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  bgPressMask: {
-    backgroundColor: `${Global.colors.DARK}22`,
-  },
   rootSv: {
-    // backgroundColor: 'green',
   },
   container: {
     flex: 1,
@@ -205,13 +196,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 1)',
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  avatar: {
+    width: avatarSize - 10,
+    height: avatarSize - 10,
+    resizeMode: 'cover',
   },
   // 用户名
-  userNameContainer: {
+  accountContainer: {
     flex: 1,
     justifyContent: 'center',
   },
-  userName: {
+  account: {
     maxWidth: '60%', // 最大宽度 60%，超过宽度自动显示省略号，结合 numberOfLines={1}
     fontSize: px(32),
     fontWeight: '700',

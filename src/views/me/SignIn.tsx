@@ -1,6 +1,6 @@
 /**
- * Description :
- * Created on : 2022/1/1
+ * Description : 登录
+ * Created on : 2022/4/6
  * Author : Victor Huang
  */
 
@@ -21,29 +21,43 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import LinearGradient from 'react-native-linear-gradient';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import md5 from 'blueimp-md5';
+import { v4 as uuidv4 } from 'uuid';
+import Toast from 'react-native-root-toast';
 
 import type { RootStackScreenProps } from '../../navigator/types';
+import type { StateType } from '../../store/reducers';
+import type { UserType } from '../../store/reducers/base/authReducer';
 
 import Global from '../../Global';
 import px from '../../utils/px';
 import Icon from '../../components/EasyIcon';
 import { testEmail } from '../../utils/Validation';
 import Images from '../../assets/Images';
+import { signIn as signInAction } from '../../store/actions/base/authAction';
+import log from '../../utils/Logger';
 
 function SignIn({ navigation, route }: RootStackScreenProps<'SignIn'>) {
   const accEle: MutableRefObject<TextInput | null> = useRef(null);
   const pwdEle: MutableRefObject<TextInput | null> = useRef(null);
-
-  const headerHeight = px(140);
+  
+  const { users } = useSelector((state: StateType) => state.auth);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const headerHeight = px(140);
 
   const [showPwd, setShowPwd] = useState<boolean>(false);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [focusedEle, setFocusedEle] = useState<MutableRefObject<TextInput | null>>();
-  const [formData, setFormData] = useState<{ account: string, password: string }>({ account: '', password: '' });
+  const [formData, setFormData] = useState<{ account: string, password: string }>({ account: route.params?.account || '', password: '' });
   const [emailValiInfo, setEmailValiInfo] = useState<string>('');
   const [pwdValiInfo, setPwdValiInfo] = useState<string>('');
   const [disabled, setDisabled] = useState<boolean>(true);
+
+  useEffect(() => {
+    setFormData({ ...formData, account: route.params?.account || '' });
+  }, [route]);
 
   useEffect(() => {
     setDisabled(formData.account.length === 0 || formData.password.length < 6);
@@ -68,6 +82,8 @@ function SignIn({ navigation, route }: RootStackScreenProps<'SignIn'>) {
    * @returns 验证结果
    */
   function validate() {
+    setEmailValiInfo('');
+    setPwdValiInfo('');
     if (formData.account && !testEmail(formData.account)) {
       setEmailValiInfo(t('signIn.valiInfo.invalidEmail'));
       accEle.current?.focus();
@@ -76,11 +92,8 @@ function SignIn({ navigation, route }: RootStackScreenProps<'SignIn'>) {
       setPwdValiInfo(t('signIn.valiInfo.pwdLessThan6'));
       pwdEle.current?.focus();
       return false;
-    } else {
-      setEmailValiInfo('');
-      setPwdValiInfo('');
+    } else
       return true;
-    }
   }
 
   /**
@@ -98,7 +111,31 @@ function SignIn({ navigation, route }: RootStackScreenProps<'SignIn'>) {
    * 登录
    */
   async function signIn() {
-    // TODO: 登录逻辑
+    // 对用户信息进行 md5 加密
+    const user = {
+      account: md5(formData.account),
+      password: md5(formData.password),
+    };
+    const findUser = users.filter((item: UserType) => {
+      return item.account === user.account;
+    });
+    log.debug(users, user, findUser);
+    if (findUser?.length === 0) {
+      setEmailValiInfo(t('signIn.valiInfo.wrongAcc'));
+      accEle.current?.focus();
+      setSubmitting(false);
+      return;
+    } else if (user.password !== findUser[0].password) {
+      setPwdValiInfo(t('signIn.valiInfo.wrongPwd'));
+      pwdEle.current?.focus();
+      setSubmitting(false);
+      return;
+    } else {
+      dispatch(signInAction(uuidv4(), findUser[0]));
+      setSubmitting(false);
+      Toast.show(t('signIn.success'));
+      navigation.navigate('Home');
+    }
   }
 
   return (
@@ -147,7 +184,7 @@ function SignIn({ navigation, route }: RootStackScreenProps<'SignIn'>) {
                 />
               </TouchableOpacity> : null}
             </View>
-            <Text style={styles.valiInfo}>{emailValiInfo}</Text>
+            <Text style={styles.valiInfo} numberOfLines={1}>{emailValiInfo}</Text>
             <Text style={styles.label}>{t('base.password')}</Text>
             <View style={styles.inputContainer}>
               <TextInput
@@ -170,8 +207,8 @@ function SignIn({ navigation, route }: RootStackScreenProps<'SignIn'>) {
                 />
               </TouchableOpacity>
             </View>
-            <Text style={styles.valiInfo}>{pwdValiInfo}</Text>
-            <TouchableOpacity style={styles.btn} onPress={requestSignIn}>
+            <Text style={styles.valiInfo} numberOfLines={1}>{pwdValiInfo}</Text>
+            <TouchableOpacity style={styles.btn} activeOpacity={disabled ? 1 : .2} onPress={requestSignIn}>
               <LinearGradient
                 start={{ x: 0, y: .5 }}
                 end={{ x: 1, y: .5 }}

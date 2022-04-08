@@ -58,11 +58,36 @@ export default (state: AuthStateType = initialState, action: Action) => {
       };
     case AUTH.SIGN_OUT:
       Global.token = ''; // null;
+      setAuthLS({});
       return {
         ...state,
-        isLoggedIn: false,
+        isSignedIn: false,
         token: null,
         currUser: {},
+      };
+    case AUTH.SET_USER_INFO:
+      const tmpUsers4Update = state.users.concat([]);
+      for (let i = 0 ; i < tmpUsers4Update.length ; i++) {
+        if (tmpUsers4Update[i].account === action.payload.account) {
+          tmpUsers4Update[i] = { ...tmpUsers4Update[i], ...action.payload.user };
+          break;
+        }
+      }
+      setUsersLS(tmpUsers4Update);
+      return {
+        ...state,
+        users: tmpUsers4Update,
+      };
+    case AUTH.SET_CURR_USER_INFO:
+      const currUser4Update = { ...state.currUser, ...action.payload };
+      setAuthLS({
+        isSignedIn: state.isSignedIn,
+        token: state.token,
+        currUser: currUser4Update,
+      });
+      return {
+        ...state,
+        currUser: currUser4Update,
       };
     default:
       return state;

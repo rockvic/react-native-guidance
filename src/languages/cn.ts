@@ -7,13 +7,16 @@
 
 export default {
   base: {
-    confirm: '确定',
+    ok: '确定',
+    confirm: '确认',
     cancel: '取消',
     signUp: '注册',
     signIn: '登录',
     signOut: '退出',
     submit: '提交',
     reset: '清除',
+    replace: '替换',
+    delete: '删除',
     openCameraRoll: '从相册选取',
     openSystemSettings: '打开设置界面{{extInfo}}',
     fromCameraRoll: '来自相册',
@@ -57,6 +60,7 @@ export default {
     title: '个人资料',
     avatar: '头像',
     alias: '昵称',
+    setAlias: '设置昵称',
   },
   changeBg: {
     title: '选择背景',
@@ -77,19 +81,39 @@ export default {
     forgetPassword: '忘记密码？',
     noAccount: '没有 RNG 账户？',
     toSignUp: '注册一个',
+    success: '登录成功！',
     valiInfo: {
       invalidEmail: '这看起来不是一个合规的电子邮箱地址',
       pwdLessThan6: '密码长度不能小于 6 位',
+      wrongAcc: '您输入的账号不存在',
+      wrongPwd: '您输入的密码不正确，请重新输入',
     },
   },
   signUp: {
     title: '注册新账户',
     tips: '这是一个模拟注册的例子，您填写的数据都会以 MD5 加密存放在本地存储中，不会造成泄露，请放心使用！',
+    accList: '账户列表',
+    success: '账户创建成功！已自动为您完成登录操作。',
+    valiInfo: {
+      existAccTitle: '账户重复',
+      existAccMsg: '您输入的账户已经存在，请输入其它电子邮箱进行注册。如果您遗忘了已有账户的密码，请通过“重置密码”功能进行密码重置。',
+      countErrTitle: '账户数量超限',
+      countErrMsg: '本地最多只允许存储 10 个账户，请选择已存在的账户进行替换，或删除现有账户。',
+    },
   },
   changePassword: {
     title: '修改密码',
+    success: '密码修改成功，请牢记您的新密码！',
+    valiInfo: {
+      samePwd: '新密码不能与老密码相同',
+    },
   },
   resetPassword: {
     title: '重置密码',
+    tips: '这是一个毫无业务逻辑的功能界面，实际工作中可按照自己的业务逻辑重新编写！',
+    alert: {
+      title: '重置完成',
+      message: '密码已重置为 111111，请立即重新登录并更改密码！',
+    },
   },
 };

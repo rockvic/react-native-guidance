@@ -50,7 +50,7 @@ const Loading: React.FC<Props> = ({ onLoaded }) => {
 
       // 从本地存储恢复当前登录用户到 redux 中（保持登录）
       const auth = await getAuthLS();
-      if (auth)
+      if (auth?.isSignedIn)
         dispatch(signIn(auth.token, auth.currUser));
 
       // 回调父界面初始化完成

@@ -10,8 +10,10 @@ import { BorderlessButton } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
 
+import type { StateType } from '../store/reducers';
+
 import Global from '../Global';
-import { StateType } from '../store/reducers';
+import px from '../utils/px';
 
 // 按钮对象类型
 export type btn = {
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'brown',
   },
   bottomBtnText: {
-    fontSize: 16,
+    fontSize: px(32),
     fontWeight: '600',
   },
  });

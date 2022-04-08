@@ -1,6 +1,7 @@
-import {Platform, Dimensions, StyleSheet} from 'react-native';
+import { Platform, Dimensions, StyleSheet } from 'react-native';
+import px from './utils/px';
 
-const {height, width} = Dimensions.get('window');
+const { height, width } = Dimensions.get('window');
 
 class Global extends Object {
   // 导航栏高度
@@ -12,34 +13,34 @@ class Global extends Object {
   static colors = {
     /** 规范配色 */
     // 主色
-    PRIMARY:            '#409EFF',
-    PRIMARY_GRADIENT:   '#68AAFA',
+    PRIMARY: '#409EFF',
+    PRIMARY_GRADIENT: '#68AAFA',
     // 辅助色
-    SUCCESS:            '#67C23A',
-    SUCCESS_GRADIENT:   '#DAF2CF',
-    WARNING:            '#E6A23C',
-    WARNING_GRADIENT:   '#F9E7CF',
-    DANGER:             '#F56C6C',
-    DANGER_GRADIENT:    '#FCDBDB',
-    INFO:               '#909399',
-    INFO_GRADIENT:      '#E4E3E6',
+    SUCCESS: '#67C23A',
+    SUCCESS_GRADIENT: '#DAF2CF',
+    WARNING: '#E6A23C',
+    WARNING_GRADIENT: '#F9E7CF',
+    DANGER: '#F56C6C',
+    DANGER_GRADIENT: '#FCDBDB',
+    INFO: '#909399',
+    INFO_GRADIENT: '#E4E3E6',
     // 中性色
     // 文字
-    PRIMARY_TEXT:       '#303133',
-    REGULAR_TEXT:       '#606266',
-    SECONDARY_TEXT:     '#909399',
-    PLACEHOLDER_TEXT:   '#C0C4CC',
+    PRIMARY_TEXT: '#303133',
+    REGULAR_TEXT: '#606266',
+    SECONDARY_TEXT: '#909399',
+    PLACEHOLDER_TEXT: '#C0C4CC',
     // 边框
-    BORDER_BASE:        '#DCDFE6',
-    BORDER_LIGHT:       '#E4E7ED',
-    BORDER_LIGHTER:     '#EBEEF5',
-    BORDER_EXTRALIGHT:  '#F2F6FC',
+    BORDER_BASE: '#DCDFE6',
+    BORDER_LIGHT: '#E4E7ED',
+    BORDER_LIGHTER: '#EBEEF5',
+    BORDER_EXTRALIGHT: '#F2F6FC',
     // 背景
-    BACKGROUND:         'rgba(242, 242, 242, 1)', // 背景色
+    BACKGROUND: 'rgba(242, 242, 242, 1)', // 背景色
 
-    DARK:               '#1A1A1A',
-    DARK_BG:            '#262626',
-    DARK_LIGHT:         '#3B3B3B',
+    DARK: '#1A1A1A',
+    DARK_BG: '#262626',
+    DARK_LIGHT: '#3B3B3B',
 
     /* FONT: 'rgba(0,0,0,1)', // '#000000', 工作区主字体颜色：（黑）
     FONT_GRAY: 'rgba(93,93,93,1)', // '#5D5D5D', 工作区主字体颜色：（深）
@@ -64,7 +65,20 @@ class Global extends Object {
     IOS_SEARCH_BG: 'rgba(202,201,207,1)', // #cac9cf 搜索框背景颜色 */
   };
 
+  static sizes = {
+    FONT_SIZE_BUTTON: px(32),
+    FONT_SIZE_LINK: px(28),
+  };
+
   static styles = StyleSheet.create({
+    H_LINE: {
+      height: px(1),
+      backgroundColor: Global.colors.BORDER_BASE,
+    },
+    V_LINE: {
+      width: px(1),
+      backgroundColor: Global.colors.BORDER_BASE,
+    },
   });
 }
 
