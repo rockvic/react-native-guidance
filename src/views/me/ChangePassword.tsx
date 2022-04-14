@@ -132,7 +132,7 @@ function ChangePassword({ navigation, route }: RootStackScreenProps<'ChangePassw
                 ref={oldPwdEle}
                 keyboardType='default'
                 placeholder={t('base.passwordInputPlaceholder')}
-                placeholderTextColor={Global.colors.PLACEHOLDER_TEXT}
+                placeholderTextColor={Global.COLORS.PLACEHOLDER_TEXT}
                 style={styles.input}
                 value={oldPassword}
                 maxLength={16}
@@ -144,18 +144,18 @@ function ChangePassword({ navigation, route }: RootStackScreenProps<'ChangePassw
               />
               <TouchableOpacity onPress={() => setShowOldPwd(!showOldPwd)}>
                 <Icon iconLib='fa5' name={showOldPwd ? 'eye-slash' : 'eye'} width={px(90)} height={px(90)}
-                  size={px(36)} color={Global.colors.PLACEHOLDER_TEXT} solid
+                  size={px(36)} color={Global.COLORS.PLACEHOLDER_TEXT} solid
                 />
               </TouchableOpacity>
             </View>
             <Text style={styles.valiInfo}>{oldPwdValiInfo}</Text>
-            <Text style={styles.label}>{t('base.password')}</Text>
+            <Text style={styles.label}>{t('base.newPassword')}</Text>
             <View style={styles.inputContainer}>
               <TextInput
                 ref={newPwdEle}
                 keyboardType='default'
                 placeholder={t('base.passwordInputPlaceholder')}
-                placeholderTextColor={Global.colors.PLACEHOLDER_TEXT}
+                placeholderTextColor={Global.COLORS.PLACEHOLDER_TEXT}
                 style={styles.input}
                 value={newPassword}
                 maxLength={16}
@@ -167,7 +167,7 @@ function ChangePassword({ navigation, route }: RootStackScreenProps<'ChangePassw
               />
               <TouchableOpacity onPress={() => setShowNewPwd(!showNewPwd)}>
                 <Icon iconLib='fa5' name={showNewPwd ? 'eye-slash' : 'eye'} width={px(90)} height={px(90)}
-                  size={px(36)} color={Global.colors.PLACEHOLDER_TEXT} solid
+                  size={px(36)} color={Global.COLORS.PLACEHOLDER_TEXT} solid
                 />
               </TouchableOpacity>
             </View>
@@ -177,13 +177,13 @@ function ChangePassword({ navigation, route }: RootStackScreenProps<'ChangePassw
                 start={{ x: 0, y: .5 }}
                 end={{ x: 1, y: .5 }}
                 colors={disabled ?
-                  [Global.colors.INFO, Global.colors.INFO] :
-                  [Global.colors.PRIMARY_GRADIENT, Global.colors.PRIMARY]
+                  [Global.COLORS.INFO, Global.COLORS.INFO] :
+                  [Global.COLORS.PRIMARY_GRADIENT, Global.COLORS.PRIMARY]
                 }
                 style={styles.btnGradientBg}>
                 {submitting ?
                   <ActivityIndicator color='white' /> :
-                  <Text style={[styles.btnText, { color: disabled ? Global.colors.PLACEHOLDER_TEXT : 'white' }]}>
+                  <Text style={[styles.btnText, { color: disabled ? Global.COLORS.PLACEHOLDER_TEXT : 'white' }]}>
                     {t('base.submit')}
                   </Text>
                 }
@@ -210,12 +210,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: px(28),
     fontWeight: '600',
-    color: Global.colors.REGULAR_TEXT,
+    color: Global.COLORS.REGULAR_TEXT,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomColor: Global.colors.BORDER_BASE,
+    borderBottomColor: Global.COLORS.BORDER_BASE,
     borderBottomWidth: px(1),
   },
   input: {
@@ -225,12 +225,12 @@ const styles = StyleSheet.create({
     height: px(90),
     fontSize: px(42),
     fontWeight: '600',
-    color: Global.colors.PRIMARY_TEXT,
+    color: Global.COLORS.PRIMARY_TEXT,
   },
   valiInfo: {
     fontSize: px(28),
     lineHeight: px(32),
-    color: Global.colors.DANGER,
+    color: Global.COLORS.DANGER,
     marginTop: px(10),
     marginBottom: px(20),
   },
@@ -264,12 +264,12 @@ const styles = StyleSheet.create({
   },
   tipsText: {
     fontSize: px(28),
-    color: Global.colors.REGULAR_TEXT,
+    color: Global.COLORS.REGULAR_TEXT,
     fontWeight: '600',
     lineHeight: px(50),
   },
   linkText: {
-    color: Global.colors.PRIMARY,
+    color: Global.COLORS.PRIMARY,
   },
 });
 

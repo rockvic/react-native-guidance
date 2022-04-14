@@ -34,10 +34,12 @@ export default {
     email: '电子邮箱',
     emailInputPlaceholder: '请输入您的电子邮箱',
     password: '密码',
+    newPassword: '新密码',
     passwordInputPlaceholder: '请输入您的密码',
   },
   navigation: {
     backText: '返回',
+    androidExitInfo: '再按一次后退将退出应用',
   },
   home: {
     tabName: {
@@ -55,6 +57,15 @@ export default {
   me: {
     title: '我的',
     dftAccountName: 'Must Not Be Named',
+    stat: {
+      openedTitle: '打开',
+      openedUnit: '次',
+      totalTCTitle: '总耗时',
+      currentTCTitle: '本次耗时',
+      hours: '小时',
+      minutes: '分钟',
+    },
+    history: '浏览记录',
   },
   profile: {
     title: '个人资料',

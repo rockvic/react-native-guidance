@@ -32,12 +32,14 @@ export default {
     choosedItems_one: 'Choosed {{count}} item',
     choosedItems_other: 'Choosed {{count}} items',
     email: 'Email',
+    newPassword: 'New Password',
     emailInputPlaceholder: 'Please enter your email',
     password: 'Password',
     passwordInputPlaceholder: 'Please enter your password',
   },
   navigation: {
     backText: 'Back',
+    androidExitInfo: 'Pressing back again will exit the app.',
   },
   home: {
     tabName: {
@@ -55,6 +57,15 @@ export default {
   me: {
     title: 'Me',
     dftAccountName: 'Must Not Be Named',
+    stat: {
+      openedTitle: 'Opened',
+      openedUnit: 'times',
+      totalTCTitle: 'Total',
+      currentTCTitle: 'Current',
+      hours: 'hrs', // hrs mins secs
+      minutes: 'mins',
+    },
+    history: 'History',
   },
   profile: {
     title: 'Profile',

@@ -34,7 +34,7 @@ const Tab = createBottomTabNavigator<HomeTabParamList>();
 function HomeTabNavigator({ navigation }: RootStackScreenProps<'Home'>) {
   const { t } = useTranslation();
   const state = useNavigationState(state => state);
-  let lastBackPressed: number = Date.now();
+  let lastBackPressed: number | undefined = undefined;
 
   useEffect(
     useCallback(() => {
@@ -43,12 +43,13 @@ function HomeTabNavigator({ navigation }: RootStackScreenProps<'Home'>) {
         const tabIndex = state.routes[0].state ? state.routes[0].state.index : 0;
         // log.debug('HomeTabNavigator > onAndroidBackPress() > tabIndex : ', tabIndex);
         if (state.index < 1 && tabIndex! < 1) {
+          // log.debug('HomeTabNavigator > onAndroidBackPress() > timer check : ', lastBackPressed && lastBackPressed + 2000 >= Date.now());
           if (lastBackPressed && lastBackPressed + 2000 >= Date.now()) {
             // 最近2秒内按过back键，可以退出应用。
             return false;
           }
           lastBackPressed = Date.now();
-          Toast.show("再按一次后退将退出应用");
+          Toast.show(t('navigation.androidExitInfo'));
           return true;
         }
         if (state.index >= 1 || tabIndex! >= 1) {
@@ -69,8 +70,8 @@ function HomeTabNavigator({ navigation }: RootStackScreenProps<'Home'>) {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: { position: 'absolute' },
-        tabBarActiveTintColor: Global.colors.PRIMARY_TEXT,
-        tabBarInactiveTintColor: Global.colors.SECONDARY_TEXT,
+        tabBarActiveTintColor: Global.COLORS.PRIMARY_TEXT,
+        tabBarInactiveTintColor: Global.COLORS.SECONDARY_TEXT,
         tabBarBackground: () => {
           if (Platform.OS === 'ios') return <BlurView
               style={StyleSheet.absoluteFill}

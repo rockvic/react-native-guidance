@@ -212,7 +212,7 @@ function ChangeBg() {
               <Icon iconLib='fa5' name='check' size={10} color='#ffffff' style={styles.chkIcon} />
             </View> : null}
             {type === 1 || uri !== source ? <TouchableOpacity style={styles.delBtn} onPress={() => onDelPhoto(idx, source)} >
-              <Icon iconLib='fa5' name='times' size={10} color={Global.colors.PLACEHOLDER_TEXT} style={styles.delIcon} />
+              <Icon iconLib='fa5' name='times' size={10} color={Global.COLORS.PLACEHOLDER_TEXT} style={styles.delIcon} />
             </TouchableOpacity> : null}
           </ImageBackground>
         </TouchableOpacity>
@@ -238,7 +238,7 @@ function ChangeBg() {
           {
             title: t('base.openCameraRoll'),
             btnStyle: { flex: 1.5 },
-            btnTextStyle: { color: Global.colors.PRIMARY_TEXT },
+            btnTextStyle: { color: Global.COLORS.PRIMARY_TEXT },
             onPress: () => {
               navigation.navigate('CameraRoll', {
                 multiple: false,
@@ -247,7 +247,7 @@ function ChangeBg() {
               });
             },
           },
-          { title: t('base.cancel'), onPress: onCancel, btnTextStyle: { color: Global.colors.PRIMARY_TEXT } },
+          { title: t('base.cancel'), onPress: onCancel, btnTextStyle: { color: Global.COLORS.PRIMARY_TEXT } },
         ]}
       />
     </View>
@@ -286,7 +286,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#ffffff',
-    backgroundColor: Global.colors.PRIMARY,
+    backgroundColor: Global.COLORS.PRIMARY,
     marginRight: 5,
     marginBottom: 5,
   },
@@ -304,7 +304,7 @@ const styles = StyleSheet.create({
   fromCR: {
     fontSize: 14,
     fontWeight: '600',
-    color: Global.colors.REGULAR_TEXT,
+    color: Global.COLORS.REGULAR_TEXT,
     marginLeft: 5,
     marginVertical: 10,
     width: '100%',

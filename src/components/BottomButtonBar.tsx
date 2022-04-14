@@ -59,7 +59,7 @@ const BottomButtonBar: React.FC<Props> = ({btns, style, children, absolutely}) =
       // 按钮文字样式
       let btnTextStyles = [
         styles.bottomBtnText, 
-        { color: true === disabled ? Global.colors.SECONDARY_TEXT : Global.colors.PRIMARY },
+        { color: true === disabled ? Global.COLORS.SECONDARY_TEXT : Global.COLORS.PRIMARY },
         { marginBottom: insets.bottom },
         btnTextStyle && btnTextStyle,
       ] as TextStyle;

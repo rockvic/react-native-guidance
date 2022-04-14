@@ -138,7 +138,7 @@ function SignUp({ navigation, route }: RootStackScreenProps<'SignUp'>) {
         t('signUp.valiInfo.countErrTitle'),
         t('signUp.valiInfo.countErrMsg'),
         [
-          { text: t('base.ok'), onPress: () => modal?.current?.show() }
+          { text: t('base.ok'), onPress: () => modal.current?.show() }
         ]
       );
       setSubmitting(false);
@@ -179,7 +179,7 @@ function SignUp({ navigation, route }: RootStackScreenProps<'SignUp'>) {
     >
       <Text style={styles.accountText} numberOfLines={1}>{accountMask}</Text>
       {selectedUserIdx === index ?
-        <Icon iconLib='fa5' name='check-circle' size={px(30)} width={px(80)} height={px(40)} color={Global.colors.PRIMARY} solid /> :
+        <Icon iconLib='fa5' name='check-circle' size={px(30)} width={px(80)} height={px(40)} color={Global.COLORS.PRIMARY} solid /> :
         <View style={styles.checkPlaceholder} />
       }
     </TouchableOpacity>
@@ -204,7 +204,7 @@ function SignUp({ navigation, route }: RootStackScreenProps<'SignUp'>) {
                 ref={accEle}
                 keyboardType='email-address'
                 placeholder={t('base.emailInputPlaceholder')}
-                placeholderTextColor={Global.colors.PLACEHOLDER_TEXT}
+                placeholderTextColor={Global.COLORS.PLACEHOLDER_TEXT}
                 style={styles.input}
                 value={formData.account}
                 maxLength={256}
@@ -218,7 +218,7 @@ function SignUp({ navigation, route }: RootStackScreenProps<'SignUp'>) {
                 onPress={() => setFormData({ ...formData, account: '' })}
               >
                 <Icon iconLib='fa5' name='times-circle' width={px(90)} height={px(90)}
-                  size={px(36)} color={Global.colors.PLACEHOLDER_TEXT} solid
+                  size={px(36)} color={Global.COLORS.PLACEHOLDER_TEXT} solid
                 />
               </TouchableOpacity> : null}
             </View>
@@ -229,7 +229,7 @@ function SignUp({ navigation, route }: RootStackScreenProps<'SignUp'>) {
                 ref={pwdEle}
                 keyboardType='default'
                 placeholder={t('base.passwordInputPlaceholder')}
-                placeholderTextColor={Global.colors.PLACEHOLDER_TEXT}
+                placeholderTextColor={Global.COLORS.PLACEHOLDER_TEXT}
                 style={styles.input}
                 value={formData.password}
                 maxLength={16}
@@ -241,7 +241,7 @@ function SignUp({ navigation, route }: RootStackScreenProps<'SignUp'>) {
               />
               <TouchableOpacity onPress={() => setShowPwd(!showPwd)}>
                 <Icon iconLib='fa5' name={showPwd ? 'eye-slash' : 'eye'} width={px(90)} height={px(90)}
-                  size={px(36)} color={Global.colors.PLACEHOLDER_TEXT} solid
+                  size={px(36)} color={Global.COLORS.PLACEHOLDER_TEXT} solid
                 />
               </TouchableOpacity>
             </View>
@@ -251,20 +251,20 @@ function SignUp({ navigation, route }: RootStackScreenProps<'SignUp'>) {
                 start={{ x: 0, y: .5 }}
                 end={{ x: 1, y: .5 }}
                 colors={disabled ?
-                  [Global.colors.INFO, Global.colors.INFO] :
-                  [Global.colors.PRIMARY_GRADIENT, Global.colors.PRIMARY]
+                  [Global.COLORS.INFO, Global.COLORS.INFO] :
+                  [Global.COLORS.PRIMARY_GRADIENT, Global.COLORS.PRIMARY]
                 }
                 style={styles.btnGradientBg}>
                 {submitting ?
                   <ActivityIndicator color='white' /> :
-                  <Text style={[styles.btnText, { color: disabled ? Global.colors.PLACEHOLDER_TEXT : 'white' }]}>
+                  <Text style={[styles.btnText, { color: disabled ? Global.COLORS.PLACEHOLDER_TEXT : 'white' }]}>
                     {t('base.submit')}
                   </Text>
                 }
               </LinearGradient>
             </TouchableOpacity>
             <View style={styles.tipsContainer}>
-              <Icon iconLib='fa5' name='info-circle' size={px(32)} color={Global.colors.DANGER} />
+              <Icon iconLib='fa5' name='info-circle' size={px(32)} color={Global.COLORS.DANGER} />
               <Text style={styles.tips}>{t('signUp.tips')}</Text>
             </View>
           </View>
@@ -275,10 +275,10 @@ function SignUp({ navigation, route }: RootStackScreenProps<'SignUp'>) {
           keyExtractor={(item, idx) => `user_${idx}`}
           data={users}
           renderItem={renderUserList}
-          ItemSeparatorComponent={() => <View style={Global.styles.H_LINE} />}
+          ItemSeparatorComponent={() => <View style={Global.STYLES.H_LINE} />}
           style={styles.list}
         />
-        <View style={Global.styles.H_LINE} />
+        <View style={Global.STYLES.H_LINE} />
         <View style={styles.bottomBtnContainer}>
           <TouchableOpacity style={styles.bottomBtn}
             activeOpacity={selectedUserIdx !== -1 ? 0.2 : 1}
@@ -287,10 +287,10 @@ function SignUp({ navigation, route }: RootStackScreenProps<'SignUp'>) {
               // 替换后完成新用户注册
               delUserByIdx();
               finishSignUp(encryptedUser!);
-              modal?.current?.hide();
+              modal.current?.hide();
             }}
           >
-            <Text style={[styles.bottomBtnText, { color: selectedUserIdx !== -1 ? Global.colors.PRIMARY : Global.colors.PLACEHOLDER_TEXT }]}>
+            <Text style={[styles.bottomBtnText, { color: selectedUserIdx !== -1 ? Global.COLORS.PRIMARY : Global.COLORS.PLACEHOLDER_TEXT }]}>
               {t('base.replace')}
             </Text>
           </TouchableOpacity>
@@ -301,7 +301,7 @@ function SignUp({ navigation, route }: RootStackScreenProps<'SignUp'>) {
               delUserByIdx();
             }}
           >
-            <Text style={[styles.bottomBtnText, { color: selectedUserIdx !== -1 ? Global.colors.PRIMARY : Global.colors.PLACEHOLDER_TEXT }]}>
+            <Text style={[styles.bottomBtnText, { color: selectedUserIdx !== -1 ? Global.COLORS.PRIMARY : Global.COLORS.PLACEHOLDER_TEXT }]}>
               {t('base.delete')}
             </Text>
           </TouchableOpacity>
@@ -334,12 +334,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: px(28),
     fontWeight: '600',
-    color: Global.colors.REGULAR_TEXT,
+    color: Global.COLORS.REGULAR_TEXT,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomColor: Global.colors.BORDER_BASE,
+    borderBottomColor: Global.COLORS.BORDER_BASE,
     borderBottomWidth: px(1),
   },
   input: {
@@ -349,12 +349,12 @@ const styles = StyleSheet.create({
     height: px(90),
     fontSize: px(42),
     fontWeight: '600',
-    color: Global.colors.PRIMARY_TEXT,
+    color: Global.COLORS.PRIMARY_TEXT,
   },
   valiInfo: {
     fontSize: px(28),
     lineHeight: px(32),
-    color: Global.colors.DANGER,
+    color: Global.COLORS.DANGER,
     marginTop: px(10),
     marginBottom: px(20),
   },
@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
     marginLeft: px(6),
     fontSize: px(24),
     lineHeight: px(34),
-    color: Global.colors.SECONDARY_TEXT,
+    color: Global.COLORS.SECONDARY_TEXT,
   },
   // user list
   list: {
@@ -409,7 +409,7 @@ const styles = StyleSheet.create({
   accountText: {
     flex: 1,
     fontSize: px(28),
-    color: Global.colors.SECONDARY_TEXT,
+    color: Global.COLORS.SECONDARY_TEXT,
     fontWeight: '600',
     marginLeft: px(10),
   },

@@ -134,7 +134,7 @@ function ResetPassword({ navigation, route }: RootStackScreenProps<'ResetPasswor
                 ref={accEle}
                 keyboardType='email-address'
                 placeholder={t('base.emailInputPlaceholder')}
-                placeholderTextColor={Global.colors.PLACEHOLDER_TEXT}
+                placeholderTextColor={Global.COLORS.PLACEHOLDER_TEXT}
                 style={styles.input}
                 value={account}
                 maxLength={256}
@@ -150,7 +150,7 @@ function ResetPassword({ navigation, route }: RootStackScreenProps<'ResetPasswor
                   setAccountValiInfo('');
                 }}>
                   <Icon iconLib='fa5' name='times-circle' width={px(90)} height={px(90)}
-                    size={px(36)} color={Global.colors.PLACEHOLDER_TEXT} solid
+                    size={px(36)} color={Global.COLORS.PLACEHOLDER_TEXT} solid
                   />
                 </TouchableOpacity> : null
               }
@@ -161,20 +161,20 @@ function ResetPassword({ navigation, route }: RootStackScreenProps<'ResetPasswor
                 start={{ x: 0, y: .5 }}
                 end={{ x: 1, y: .5 }}
                 colors={disabled ?
-                  [Global.colors.INFO, Global.colors.INFO] :
-                  [Global.colors.PRIMARY_GRADIENT, Global.colors.PRIMARY]
+                  [Global.COLORS.INFO, Global.COLORS.INFO] :
+                  [Global.COLORS.PRIMARY_GRADIENT, Global.COLORS.PRIMARY]
                 }
                 style={styles.btnGradientBg}>
                 {submitting ?
                   <ActivityIndicator color='white' /> :
-                  <Text style={[styles.btnText, { color: disabled ? Global.colors.PLACEHOLDER_TEXT : 'white' }]}>
+                  <Text style={[styles.btnText, { color: disabled ? Global.COLORS.PLACEHOLDER_TEXT : 'white' }]}>
                     {t('base.submit')}
                   </Text>
                 }
               </LinearGradient>
             </TouchableOpacity>
             <View style={styles.tipsContainer}>
-              <Icon iconLib='fa5' name='info-circle' size={px(32)} color={Global.colors.DANGER} />
+              <Icon iconLib='fa5' name='info-circle' size={px(32)} color={Global.COLORS.DANGER} />
               <Text style={styles.tips}>{t('resetPassword.tips')}</Text>
             </View>
           </View>
@@ -198,12 +198,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: px(28),
     fontWeight: '600',
-    color: Global.colors.REGULAR_TEXT,
+    color: Global.COLORS.REGULAR_TEXT,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomColor: Global.colors.BORDER_BASE,
+    borderBottomColor: Global.COLORS.BORDER_BASE,
     borderBottomWidth: px(1),
   },
   input: {
@@ -213,12 +213,12 @@ const styles = StyleSheet.create({
     height: px(90),
     fontSize: px(42),
     fontWeight: '600',
-    color: Global.colors.PRIMARY_TEXT,
+    color: Global.COLORS.PRIMARY_TEXT,
   },
   valiInfo: {
     fontSize: px(28),
     lineHeight: px(32),
-    color: Global.colors.DANGER,
+    color: Global.COLORS.DANGER,
     marginTop: px(10),
     marginBottom: px(20),
   },
@@ -255,7 +255,7 @@ const styles = StyleSheet.create({
     marginLeft: px(6),
     fontSize: px(24),
     lineHeight: px(34),
-    color: Global.colors.SECONDARY_TEXT,
+    color: Global.COLORS.SECONDARY_TEXT,
   },
 });
 

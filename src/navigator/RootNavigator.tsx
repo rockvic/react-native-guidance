@@ -35,8 +35,10 @@ function RootNavigator() {
         screenOptions={{
           headerBackTitle: t('navigation.backText'),
           headerBackTitleStyle: { fontSize: px(28), fontWeight: '700' },
-          headerTintColor: Global.colors.PRIMARY_TEXT,
+          headerTintColor: Global.COLORS.PRIMARY_TEXT,
           headerTitleStyle: { fontSize: px(32), fontWeight: '700' },
+          gestureResponseDistance: 300,
+          gestureVelocityImpact: 1,
         }}
       >
         <Stack.Screen name='Home' component={HomeTabNavigator} options={{ headerShown: false }} />

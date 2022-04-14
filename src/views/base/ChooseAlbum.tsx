@@ -53,12 +53,12 @@ function ChooseAlbum({ navigation, route }: RootStackScreenProps<'ChooseAlbum'>)
   useLayoutEffect(() => {
     // 设置定制化的 Header
     const options: Partial<StackNavigationOptions> = {
-      headerTintColor: Global.colors.BORDER_EXTRALIGHT,
+      headerTintColor: Global.COLORS.BORDER_EXTRALIGHT,
       headerStyle: {
         backgroundColor: '#1A1A1A',
       },
       /* headerTitleStyle: {
-        color: Global.colors.BORDER_EXTRALIGHT,
+        color: Global.COLORS.BORDER_EXTRALIGHT,
       }, */
       headerShadowVisible: false,
     };
@@ -79,7 +79,7 @@ function ChooseAlbum({ navigation, route }: RootStackScreenProps<'ChooseAlbum'>)
    */
   function getCloseBtnOnHeader(props: HeaderBackButtonProps): React.ReactNode {
     return <RectButton style={styles.backBtn} onPress={() => navigation.goBack()}>
-      <Icon name='chevron-down-sharp' size={28} color={Global.colors.BORDER_EXTRALIGHT} />
+      <Icon name='chevron-down-sharp' size={28} color={Global.COLORS.BORDER_EXTRALIGHT} />
     </RectButton>;
   }
 
@@ -205,13 +205,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: '600',
-    color: Global.colors.BORDER_EXTRALIGHT,
+    color: Global.COLORS.BORDER_EXTRALIGHT,
     marginBottom: 8,
   },
   count: {
     fontSize: 14,
     fontWeight: '600',
-    color: Global.colors.BORDER_LIGHT,
+    color: Global.COLORS.BORDER_LIGHT,
   },
   thumbnail: {
     width: 80,

@@ -69,7 +69,7 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
   useLayoutEffect(() => {
     // 设置定制化的 Header
     const options: Partial<StackNavigationOptions> = {
-      headerTintColor: Global.colors.BORDER_EXTRALIGHT,
+      headerTintColor: Global.COLORS.BORDER_EXTRALIGHT,
       headerStyle: {
         backgroundColor: '#1A1A1A',
       },
@@ -88,7 +88,7 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
    */
   function getCloseBtnOnHeader(props: HeaderBackButtonProps): React.ReactNode {
     return <RectButton style={styles.backBtn} onPress={() => navigation.goBack()}>
-      <Icon name='chevron-down-sharp' size={28} color={Global.colors.BORDER_EXTRALIGHT} />
+      <Icon name='chevron-down-sharp' size={28} color={Global.COLORS.BORDER_EXTRALIGHT} />
     </RectButton>;
   }
 
@@ -233,7 +233,7 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
         <Text style={styles.albumBtnText}>
           {selectedAlbum === defaultAlbum ? t('cameraRoll.allPhotos') : selectedAlbum}
         </Text>
-        <Icon name='chevron-down-sharp' size={20} color={Global.colors.BORDER_EXTRALIGHT} />
+        <Icon name='chevron-down-sharp' size={20} color={Global.COLORS.BORDER_EXTRALIGHT} />
       </RectButton>
       <Text style={styles.selectedCount}>{t('base.choosedItems', { count: selectedPhotos.length })}</Text>
     </View>;
@@ -334,7 +334,7 @@ function MyCameraRoll({ navigation, route }: RootStackScreenProps<'CameraRoll'>)
       <BottomButtonBar
         btns={[
           { title: t('base.confirm'), onPress: onConfirm, disabled: selectedPhotos.length === 0 },
-          { title: t('base.cancel'), onPress: onCancel, btnTextStyle: { color: Global.colors.SECONDARY_TEXT } },
+          { title: t('base.cancel'), onPress: onCancel, btnTextStyle: { color: Global.COLORS.SECONDARY_TEXT } },
         ]}
         style={styles.bottomBar}
       />
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
     height: 60,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: Global.colors.PRIMARY,
+    backgroundColor: Global.COLORS.PRIMARY,
     borderRadius: 8,
     marginBottom: 40,
   },
@@ -396,13 +396,13 @@ const styles = StyleSheet.create({
   },
   albumBtnText: {
     fontSize: 16,
-    color: Global.colors.BORDER_EXTRALIGHT,
+    color: Global.COLORS.BORDER_EXTRALIGHT,
     fontWeight: '600',
     marginRight: 5,
   },
   selectedCount: {
     flex: 1,
-    color: Global.colors.BORDER_EXTRALIGHT,
+    color: Global.COLORS.BORDER_EXTRALIGHT,
     fontSize: 12,
     fontWeight: '600',
     textAlign: 'right',
@@ -436,7 +436,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#ffffff',
-    backgroundColor: Global.colors.PRIMARY,
+    backgroundColor: Global.COLORS.PRIMARY,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 5,

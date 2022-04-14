@@ -4,8 +4,8 @@
  * Author : Victor Huang
  */
 
-import React, { useRef, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, StatusBar, Image, TextInput } from 'react-native';
+import React, { MutableRefObject, useRef, useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, StatusBar, Image, TextInput, Keyboard } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -19,6 +19,7 @@ import { signOut, setCurrUserInfo, setUserInfo } from '../../store/actions/base/
 import Card from '../../components/Card';
 import Icon from '../../components/EasyIcon';
 import BottomModal, { ModalType } from '../../components/BottomModal';
+import { ScrollView } from 'react-native-gesture-handler';
 
 function Profile({ navigation, route }: RootStackScreenProps<'Profile'>) {
   const modal = useRef<ModalType>(null);
@@ -46,61 +47,65 @@ function Profile({ navigation, route }: RootStackScreenProps<'Profile'>) {
     const user = { ...(currUser as UserType), alias: alias }
     dispatch(setCurrUserInfo(user));
     dispatch(setUserInfo(user.account, user));
-    modal?.current?.hide();
+    modal.current?.hide();
   }
 
   return (
     <View style={styles.root}>
       <StatusBar barStyle={'dark-content'} />
-      <Card style={styles.card}>
-        <View style={styles.row}>
-          <Icon iconLib='fa5' name='envelope' width={px(80)} height={px(60)} size={px(32)} color={Global.colors.REGULAR_TEXT} solid />
-          <Text style={styles.label}>{t('base.email')}</Text>
-          <Text style={[styles.value, { marginRight: px(20) }]}>{(currUser as UserType)?.accountMask}</Text>
-        </View>
-        <View style={styles.line} />
-        <TouchableOpacity style={styles.row} onPress={() => modal?.current?.show()}>
-          <Icon iconLib='fa5' name='hat-wizard' width={px(80)} height={px(60)} size={px(32)} color={Global.colors.REGULAR_TEXT} />
-          <Text style={styles.label}>{t('profile.alias')}</Text>
-          <Text style={styles.value}>{(currUser as UserType)?.alias}</Text>
-          <Icon iconLib='fa5' name='chevron-right' width={px(50)} height={px(50)} size={px(40)} color={Global.colors.PLACEHOLDER_TEXT} />
-        </TouchableOpacity>
-        <View style={styles.line} />
-        <TouchableOpacity
-          style={[styles.row, { borderBottomWidth: 0 }]}
-          onPress={() => navigation.navigate('CameraRoll', { onChoosed: onChooseAvatar })}
-        >
-          <Icon iconLib='fa5' name='portrait' width={px(80)} height={px(60)} size={px(32)} color={Global.colors.REGULAR_TEXT} />
-          <Text style={styles.label}>{t('profile.avatar')}</Text>
-          <View style={styles.avatarCol}>
-            <View style={styles.avatarContainer}>
-              {(currUser as UserType).avatar ? 
-                <Image source={{ uri: (currUser as UserType).avatar }}
-                  style={styles.avatar} resizeMode='cover' /> :
-                <Icon iconLib='fa5' name='robot' style={styles.avatar}
-                  size={px(40)} color={Global.colors.SECONDARY_TEXT} solid
-                />
-              }
-            </View>
+      <ScrollView>
+        <Card style={styles.card}>
+          <View style={styles.row}>
+            <Icon iconLib='fa5' name='envelope' width={px(80)} height={px(60)} size={px(32)} color={Global.COLORS.REGULAR_TEXT} solid />
+            <Text style={styles.label}>{t('base.email')}</Text>
+            <Text style={[styles.value, { marginRight: px(20) }]}>{(currUser as UserType)?.accountMask}</Text>
           </View>
-          <Icon iconLib='fa5' name='chevron-right' width={px(50)} height={px(50)} size={px(40)} color={Global.colors.PLACEHOLDER_TEXT} />
-        </TouchableOpacity>
-        <View style={styles.line} />
-        <TouchableOpacity style={styles.row} onPress={() => navigation.navigate('ChangePassword')}>
-          <Icon iconLib='fa5' name='user-lock' width={px(80)} height={px(60)} size={px(32)} color={Global.colors.REGULAR_TEXT} />
-          <Text style={styles.label}>{t('base.password')}</Text>
-          <Text style={styles.value}>{t('changePassword.title')}</Text>
-          <Icon iconLib='fa5' name='chevron-right' width={px(50)} height={px(50)} size={px(40)} color={Global.colors.PLACEHOLDER_TEXT} />
-        </TouchableOpacity>
-      </Card>
-      <Card style={styles.card}>
-        <TouchableOpacity style={styles.btnRow} onPress={() => {
-          dispatch(signOut());
-          navigation.navigate('Home');
-        }}>
-          <Text style={[styles.btnText]}>{t('base.signOut')}</Text>
-        </TouchableOpacity>
-      </Card>
+          <View style={styles.line} />
+          <TouchableOpacity style={styles.row} onPress={() => {
+            modal.current?.show();
+          }}>
+            <Icon iconLib='fa5' name='hat-wizard' width={px(80)} height={px(60)} size={px(32)} color={Global.COLORS.REGULAR_TEXT} />
+            <Text style={styles.label}>{t('profile.alias')}</Text>
+            <Text style={styles.value}>{(currUser as UserType)?.alias}</Text>
+            <Icon iconLib='fa5' name='chevron-right' width={px(50)} height={px(50)} size={px(40)} color={Global.COLORS.PLACEHOLDER_TEXT} />
+          </TouchableOpacity>
+          <View style={styles.line} />
+          <TouchableOpacity
+            style={[styles.row, { borderBottomWidth: 0 }]}
+            onPress={() => navigation.navigate('CameraRoll', { onChoosed: onChooseAvatar })}
+          >
+            <Icon iconLib='fa5' name='portrait' width={px(80)} height={px(60)} size={px(32)} color={Global.COLORS.REGULAR_TEXT} />
+            <Text style={styles.label}>{t('profile.avatar')}</Text>
+            <View style={styles.avatarCol}>
+              <View style={styles.avatarContainer}>
+                {(currUser as UserType).avatar ? 
+                  <Image source={{ uri: (currUser as UserType).avatar }}
+                    style={styles.avatar} resizeMode='cover' /> :
+                  <Icon iconLib='fa5' name='robot' style={styles.avatar}
+                    size={px(40)} color={Global.COLORS.SECONDARY_TEXT} solid
+                  />
+                }
+              </View>
+            </View>
+            <Icon iconLib='fa5' name='chevron-right' width={px(50)} height={px(50)} size={px(40)} color={Global.COLORS.PLACEHOLDER_TEXT} />
+          </TouchableOpacity>
+          <View style={styles.line} />
+          <TouchableOpacity style={styles.row} onPress={() => navigation.navigate('ChangePassword')}>
+            <Icon iconLib='fa5' name='user-lock' width={px(80)} height={px(60)} size={px(32)} color={Global.COLORS.REGULAR_TEXT} />
+            <Text style={styles.label}>{t('base.password')}</Text>
+            <Text style={styles.value}>{t('changePassword.title')}</Text>
+            <Icon iconLib='fa5' name='chevron-right' width={px(50)} height={px(50)} size={px(40)} color={Global.COLORS.PLACEHOLDER_TEXT} />
+          </TouchableOpacity>
+        </Card>
+        <Card style={[styles.card, { marginBottom: px(80) }]}>
+          <TouchableOpacity style={styles.btnRow} onPress={() => {
+            dispatch(signOut());
+            navigation.navigate('Home');
+          }}>
+            <Text style={[styles.btnText]}>{t('base.signOut')}</Text>
+          </TouchableOpacity>
+        </Card>
+      </ScrollView>
       <BottomModal ref={modal} title={t('profile.setAlias')}>
         <View style={styles.inputContainer}>
           <TextInput
@@ -111,7 +116,7 @@ function Profile({ navigation, route }: RootStackScreenProps<'Profile'>) {
             autoFocus
           />
           <TouchableOpacity onPress={updateAlias}>
-            <Icon iconLib='fa5' name='check' size={px(30)} width={px(120)} height={px(90)} color={Global.colors.PRIMARY} />
+            <Icon iconLib='fa5' name='check' size={px(30)} width={px(120)} height={px(90)} color={Global.COLORS.PRIMARY} />
           </TouchableOpacity>
         </View>
       </BottomModal>
@@ -135,18 +140,18 @@ const styles = StyleSheet.create({
   },
   line: {
     height: px(1),
-    backgroundColor: Global.colors.BORDER_BASE,
+    backgroundColor: Global.COLORS.BORDER_BASE,
   },
   label: {
     flex: .5,
     fontSize: px(32),
-    color: Global.colors.PRIMARY_TEXT,
+    color: Global.COLORS.PRIMARY_TEXT,
     fontWeight: '700',
   },
   value: {
     flex: 1,
     fontSize: px(28),
-    color: Global.colors.REGULAR_TEXT,
+    color: Global.COLORS.REGULAR_TEXT,
     textAlign: 'right',
   },
   avatarCol: {
@@ -157,7 +162,7 @@ const styles = StyleSheet.create({
     width: px(100),
     height: px(100),
     borderRadius: px(16),
-    backgroundColor: Global.colors.BACKGROUND,
+    backgroundColor: Global.COLORS.BACKGROUND,
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
@@ -173,7 +178,7 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontSize: px(32),
-    color: Global.colors.DANGER,
+    color: Global.COLORS.DANGER,
     fontWeight: '700',
   },
   inputContainer: {
@@ -187,13 +192,13 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     fontSize: px(28),
     fontWeight: '600',
-    color: Global.colors.PRIMARY_TEXT,
+    color: Global.COLORS.PRIMARY_TEXT,
     height: px(90),
     borderWidth: px(1),
-    borderColor: Global.colors.BORDER_LIGHT,
+    borderColor: Global.COLORS.BORDER_LIGHT,
     borderRadius: px(16),
     paddingHorizontal: px(20),
-    backgroundColor: Global.colors.BACKGROUND,
+    backgroundColor: Global.COLORS.BACKGROUND,
   },
 });
 

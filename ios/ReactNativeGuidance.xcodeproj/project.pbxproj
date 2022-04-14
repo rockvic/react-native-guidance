@@ -12,6 +12,12 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		504EA5E4BD1FE8CA01DB4070 /* libPods-ReactNativeGuidance.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B000EF48A0C42B5E1EEFE231 /* libPods-ReactNativeGuidance.a */; };
+		5792D3BF2806C4E200829223 /* DINPro-CondBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5792D3B92806C4E100829223 /* DINPro-CondBold.otf */; };
+		5792D3C02806C4E200829223 /* DINPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5792D3BA2806C4E100829223 /* DINPro-Light.ttf */; };
+		5792D3C12806C4E200829223 /* DINPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5792D3BB2806C4E100829223 /* DINPro-Bold.ttf */; };
+		5792D3C22806C4E200829223 /* DINPro-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5792D3BC2806C4E100829223 /* DINPro-Black.otf */; };
+		5792D3C32806C4E200829223 /* DINPro-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5792D3BD2806C4E100829223 /* DINPro-Medium.ttf */; };
+		5792D3C42806C4E200829223 /* DINPro-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 5792D3BE2806C4E200829223 /* DINPro-Regular.otf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		EB2FDC90881F31C140D7F39F /* libPods-ReactNativeGuidance-ReactNativeGuidanceTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7F24C80691920A04E3564FD /* libPods-ReactNativeGuidance-ReactNativeGuidanceTests.a */; };
 /* End PBXBuildFile section */
@@ -39,6 +45,12 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ReactNativeGuidance/main.m; sourceTree = "<group>"; };
 		2AC96E9AE8ABCA15B203CE12 /* Pods-ReactNativeGuidance.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeGuidance.debug.xcconfig"; path = "Target Support Files/Pods-ReactNativeGuidance/Pods-ReactNativeGuidance.debug.xcconfig"; sourceTree = "<group>"; };
 		3EA925EEC0CD0C041D38BB3A /* Pods-ReactNativeGuidance-ReactNativeGuidanceTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeGuidance-ReactNativeGuidanceTests.debug.xcconfig"; path = "Target Support Files/Pods-ReactNativeGuidance-ReactNativeGuidanceTests/Pods-ReactNativeGuidance-ReactNativeGuidanceTests.debug.xcconfig"; sourceTree = "<group>"; };
+		5792D3B92806C4E100829223 /* DINPro-CondBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINPro-CondBold.otf"; sourceTree = "<group>"; };
+		5792D3BA2806C4E100829223 /* DINPro-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINPro-Light.ttf"; sourceTree = "<group>"; };
+		5792D3BB2806C4E100829223 /* DINPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINPro-Bold.ttf"; sourceTree = "<group>"; };
+		5792D3BC2806C4E100829223 /* DINPro-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINPro-Black.otf"; sourceTree = "<group>"; };
+		5792D3BD2806C4E100829223 /* DINPro-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINPro-Medium.ttf"; sourceTree = "<group>"; };
+		5792D3BE2806C4E200829223 /* DINPro-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DINPro-Regular.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ReactNativeGuidance/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B000EF48A0C42B5E1EEFE231 /* libPods-ReactNativeGuidance.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNativeGuidance.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7F24C80691920A04E3564FD /* libPods-ReactNativeGuidance-ReactNativeGuidanceTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ReactNativeGuidance-ReactNativeGuidanceTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +118,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		5792D3B82806C4A800829223 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5792D3BC2806C4E100829223 /* DINPro-Black.otf */,
+				5792D3BB2806C4E100829223 /* DINPro-Bold.ttf */,
+				5792D3B92806C4E100829223 /* DINPro-CondBold.otf */,
+				5792D3BA2806C4E100829223 /* DINPro-Light.ttf */,
+				5792D3BD2806C4E100829223 /* DINPro-Medium.ttf */,
+				5792D3BE2806C4E200829223 /* DINPro-Regular.otf */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +141,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				5792D3B82806C4A800829223 /* Resources */,
 				13B07FAE1A68108700A75B9A /* ReactNativeGuidance */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ReactNativeGuidanceTests */,
@@ -243,7 +269,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				5792D3C32806C4E200829223 /* DINPro-Medium.ttf in Resources */,
+				5792D3C02806C4E200829223 /* DINPro-Light.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				5792D3C42806C4E200829223 /* DINPro-Regular.otf in Resources */,
+				5792D3BF2806C4E200829223 /* DINPro-CondBold.otf in Resources */,
+				5792D3C12806C4E200829223 /* DINPro-Bold.ttf in Resources */,
+				5792D3C22806C4E200829223 /* DINPro-Black.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

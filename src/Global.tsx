@@ -3,14 +3,31 @@ import px from './utils/px';
 
 const { height, width } = Dimensions.get('window');
 
+type sizesType = {
+  FONT_SIZE_BUTTON: number;
+  FONT_SIZE_LINK: number;
+  FONT_SIZE_EMPHASIZE: number;
+  FONT_SIZE_TITLE_HEAVY: number;
+  FONT_SIZE_TITLE: number;
+  FONT_SIZE_BODY: number;
+  FONT_SIZE_SECONDARY: number;
+  BOLD: "bold" | "normal" | "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900" | undefined;
+  BOLDER: "bold" | "normal" | "100" | "200" | "300" | "400" | "500" | "600" | "700" | "800" | "900" | undefined;
+};
 class Global extends Object {
-  // 导航栏高度
-  static navBarHeight: number = Platform.OS === 'ios' ? 64 : 44;
+
+  // iOS / Android 设计规范中常用尺寸
+  static BAR_SIZES = {
+    // 导航栏高度，不包含 StatusBar 高度
+    HEADER_HEIGHT: Platform.OS === 'ios' ? 44 : 56,
+    // iOS：2x - 98, 3x - 146(not 147)
+    TABBAR_HEIGHT: Platform.OS === 'ios' ? 49 : 49,
+  };
 
   static token: string = '';
 
   // 常用颜色
-  static colors = {
+  static COLORS = {
     /** 规范配色 */
     // 主色
     PRIMARY: '#409EFF',
@@ -65,20 +82,35 @@ class Global extends Object {
     IOS_SEARCH_BG: 'rgba(202,201,207,1)', // #cac9cf 搜索框背景颜色 */
   };
 
-  static sizes = {
+  static SIZES: sizesType = {
     FONT_SIZE_BUTTON: px(32),
     FONT_SIZE_LINK: px(28),
+    FONT_SIZE_EMPHASIZE: px(48),
+    FONT_SIZE_TITLE_HEAVY: px(32),
+    FONT_SIZE_TITLE: px(28),
+    FONT_SIZE_BODY: px(24),
+    FONT_SIZE_SECONDARY: px(20),
+    // 普通字体加粗效果
+    BOLD: Platform.OS === 'android' ? '700' : '600',
+    BOLDER: Platform.OS === 'android' ? '900' : '700',
   };
 
-  static styles = StyleSheet.create({
+  static STYLES = StyleSheet.create({
     H_LINE: {
       height: px(1),
-      backgroundColor: Global.colors.BORDER_BASE,
+      backgroundColor: Global.COLORS.BORDER_BASE,
     },
     V_LINE: {
       width: px(1),
-      backgroundColor: Global.colors.BORDER_BASE,
+      backgroundColor: Global.COLORS.BORDER_BASE,
     },
+    SHADOW: {
+      shadowOffset: { width: 0, height: 0 },
+      shadowRadius: px(10),
+      shadowOpacity: 0.15,
+      shadowColor: "#000000",
+      elevation: 5,
+    }
   });
 }
 

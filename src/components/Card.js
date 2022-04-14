@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     shadowRadius: px(10),
     shadowOpacity: 0.15,
     shadowColor: "#000000",
-    elevation: 5
+    elevation: 5,
   },
 });
 

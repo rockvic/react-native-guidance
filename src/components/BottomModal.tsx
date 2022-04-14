@@ -14,6 +14,7 @@ import {
   Keyboard,
   Platform,
   TouchableWithoutFeedback,
+  StatusBar,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurView } from '@react-native-community/blur';
@@ -43,6 +44,18 @@ const BottomModal = forwardRef<ModalType, Props>(({ title, children }, ref) => {
   let paddingBottom = Platform.OS === 'android' ? insets.bottom : (
     showKeyboard ? keyboardHeight : insets.bottom
   );
+
+  /* useEffect(() => {
+    if (Platform.OS === 'android') {
+      if (visible) {
+        StatusBar.setTranslucent(true);
+        setVisible(true);
+      } else {
+        StatusBar.setTranslucent(false);
+        setVisible(false);
+      }
+    }
+  }, [visible]); */
 
   useEffect(() => {
     const showKL = Keyboard.addListener("keyboardDidShow", (e) => {
@@ -76,7 +89,7 @@ const BottomModal = forwardRef<ModalType, Props>(({ title, children }, ref) => {
         <View style={[StyleSheet.absoluteFill, styles.root]}>
           <BlurView
             style={StyleSheet.absoluteFill}
-            blurType='light'
+            blurType={'light'}
             // ios
             blurAmount={20}
             // android
@@ -88,7 +101,7 @@ const BottomModal = forwardRef<ModalType, Props>(({ title, children }, ref) => {
               <Text style={styles.title}>{title}</Text>
               {children}
               <TouchableOpacity style={styles.closeBtn} onPress={() => hide()}>
-                <Icon iconLib='fa5' name='times' size={px(30)} color={Global.colors.PLACEHOLDER_TEXT} style={styles.btnIcon} />
+                <Icon iconLib='fa5' name='times' size={px(30)} color={Global.COLORS.PLACEHOLDER_TEXT} style={styles.btnIcon} />
               </TouchableOpacity>
             </TouchableOpacity>
           </View>
@@ -100,10 +113,13 @@ const BottomModal = forwardRef<ModalType, Props>(({ title, children }, ref) => {
 
 const styles = StyleSheet.create({
   modal: {
+    marginHorizontal: 0,
+    marginVertical: 0,
   },
   root: {
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, .2)',
   },
   bottomContainer: {
     width: '100%',
@@ -125,7 +141,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: px(32),
     fontWeight: '700',
-    color: Global.colors.PRIMARY_TEXT,
+    color: Global.COLORS.PRIMARY_TEXT,
   },
   closeBtn: {
     position: 'absolute',
